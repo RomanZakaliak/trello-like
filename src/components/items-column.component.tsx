@@ -1,4 +1,4 @@
-import IColumn from "../interfaces/IColumn";
+import IColumn from "../interfaces/column.interface";
 import { useAppSelector } from "../lib/redux/hooks";
 
 interface ItemsColumnProps {

@@ -1,22 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import ITodoItem from "../../../interfaces/ITodoItem";
-import LocalStorageService from "../../../services/storage.service";
+import ITodoItem from "../../../interfaces/todo-item.interface";
+import LocalStorageService from "../../../services/todo-items.service";
 
 const itemsService = new LocalStorageService<ITodoItem>("TODO_ITEMS");
-const initialState: Array<ITodoItem> = itemsService.getItems() ?? [
-  {
-    id: 0,
-    title: "Learn react",
-    description: "Make some effort to learn react",
-    status: "in_progress",
-  },
-  {
-    id: 1,
-    title: "Make something amazing",
-    description: "It just dummy items",
-    status: "todo",
-  },
-];
+const initialState: Array<ITodoItem> = [];
 
 export const todoItemSlice = createSlice({
   name: "TodoItem",

@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import IColumn from "../../../interfaces/IColumn";
-import LocalStorageService from "../../../services/storage.service";
+import IColumn from "../../../interfaces/column.interface";
+import LocalStorageService from "../../../services/todo-items.service";
 
 const columnsService = new LocalStorageService<IColumn>("TODO_COLUMNS");
 const initialState: Array<IColumn> = columnsService.getItems() ?? [
@@ -27,7 +27,7 @@ export const columnsSlice = createSlice({
   reducers: {
     addColumn: (state, action: PayloadAction<IColumn>) => {
       state.push(action.payload);
-      //TODO: seems like it would not work, need to move "save to strage logic to redux middleware"
+      //TODO: seems like it would not work, need to move "save to storage logic to redux middleware"
       columnsService.saveItems(state);
     },
   },

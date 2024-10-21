@@ -1,4 +1,4 @@
-import { TItemStatus } from "./types/TItemStatus";
+import { TItemStatus } from "./types/items-status.type.ts";
 
 export default interface IColumn {
   id: number;

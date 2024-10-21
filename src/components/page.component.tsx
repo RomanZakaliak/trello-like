@@ -4,6 +4,7 @@ import ItemsColumn from "./items-column.component";
 
 function Page() {
   const columns = useAppSelector((state) => state.columns);
+
   return (
     <>
       <CollapseSwitch />
