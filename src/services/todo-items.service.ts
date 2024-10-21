@@ -1,6 +1,8 @@
+import { title } from "process";
 import IColumn from "../interfaces/column.interface";
 import ITodoItem from "../interfaces/todo-item.interface";
 import { IRepository } from "./repos/repository.interface";
+import { TodoItemsRespository } from "./repos/todo-items.repository";
 //import { IRepository } from "./repos/repository.interface";
 
 // currently leave as is to avoid build error but going to replace with implementation below
@@ -27,8 +29,17 @@ export class TodoItemsService {
     this.repository = repository;
   }
 
-  async getTodoItems(): Promise<Array<ITodoItem>> {
-    const items = await this.repository.getAll();
+  async getAll(): Promise<Array<ITodoItem>> {
+    //const items = await this.repository.getAll();
+    const items = [
+      {
+        id: 0,
+        title: "Builde awesome react app",
+        description: "Make some effort to fullfil your duty 😁",
+        status: "todo",
+      },
+    ] as Array<ITodoItem>;
+    
     return items;
   }
 
@@ -37,3 +48,7 @@ export class TodoItemsService {
     return item;
   }
 }
+
+export const todoItemsService = new TodoItemsService(
+  new TodoItemsRespository("TODO_ITEMS"),
+);

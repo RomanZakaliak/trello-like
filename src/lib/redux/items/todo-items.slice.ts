@@ -1,22 +1,23 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ITodoItem from "../../../interfaces/todo-item.interface";
-import LocalStorageService from "../../../services/todo-items.service";
+import { todoItemsService } from "../../../services/todo-items.service";
 
-const itemsService = new LocalStorageService<ITodoItem>("TODO_ITEMS");
 const initialState: Array<ITodoItem> = [];
+
+const getAllTodos = createAsyncThunk("todos/fetchAll", async () => {
+  const items = await todoItemsService.getAll();
+  console.log(items);
+  return items;
+});
 
 export const todoItemSlice = createSlice({
   name: "TodoItem",
   initialState,
   reducers: {
-    setTodoItems: (_, action: PayloadAction<Array<ITodoItem>>) => {
-      return action.payload;
-    },
-
     addTodoItem: (state, action: PayloadAction<ITodoItem>) => {
       state.push(action.payload);
       //TODO: seems like it would not work, need to move "save to strage logic to redux middleware"
-      itemsService.saveItems(state);
+      //itemsService.saveItems(state);
     },
 
     updateTodoItem: (state, action: PayloadAction<ITodoItem>) => {
@@ -25,16 +26,23 @@ export const todoItemSlice = createSlice({
         ({ id: 0 } as ITodoItem);
       state[state.indexOf(item)] = action.payload;
       //TODO: seems like it would not work, need to move "save to strage logic to redux middleware"
-      itemsService.saveItems(state);
+      //itemsService.saveItems(state);
     },
     removeTodoItem: (state, action: PayloadAction<number>) => {
       const newState = state.filter((item) => item.id !== action.payload);
       //TODO: seems like it would not work, need to move "save to strage logic to redux middleware"
-      itemsService.saveItems(newState);
+      //itemsService.saveItems(newState);
       return newState;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(getAllTodos.fulfilled, (_, action) => {
+      return action.payload;
+    });
+  },
 });
 
-export const { setTodoItems, addTodoItem, updateTodoItem, removeTodoItem } =
+export const { addTodoItem, updateTodoItem, removeTodoItem } =
   todoItemSlice.actions;
+
+export { getAllTodos };
