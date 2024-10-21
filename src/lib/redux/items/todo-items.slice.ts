@@ -9,11 +9,16 @@ export const todoItemSlice = createSlice({
   name: "TodoItem",
   initialState,
   reducers: {
+    setTodoItems: (_, action: PayloadAction<Array<ITodoItem>>) => {
+      return action.payload;
+    },
+
     addTodoItem: (state, action: PayloadAction<ITodoItem>) => {
       state.push(action.payload);
       //TODO: seems like it would not work, need to move "save to strage logic to redux middleware"
       itemsService.saveItems(state);
     },
+
     updateTodoItem: (state, action: PayloadAction<ITodoItem>) => {
       const item =
         state.find((i) => i.id === action.payload.id) ??
@@ -30,3 +35,6 @@ export const todoItemSlice = createSlice({
     },
   },
 });
+
+export const { setTodoItems, addTodoItem, updateTodoItem, removeTodoItem } =
+  todoItemSlice.actions;

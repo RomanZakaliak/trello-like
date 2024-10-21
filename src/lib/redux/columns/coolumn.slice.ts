@@ -1,34 +1,21 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import IColumn from "../../../interfaces/column.interface";
-import LocalStorageService from "../../../services/todo-items.service";
 
-const columnsService = new LocalStorageService<IColumn>("TODO_COLUMNS");
-const initialState: Array<IColumn> = columnsService.getItems() ?? [
-  {
-    id: 0,
-    title: "ToDo",
-    associatedStatus: "todo",
-  },
-  {
-    id: 1,
-    title: "In Progress",
-    associatedStatus: "in_progress",
-  },
-  {
-    id: 2,
-    title: "Done",
-    associatedStatus: "done",
-  },
-];
+const initialState: Array<IColumn> = [];
 
 export const columnsSlice = createSlice({
   name: "columns",
   initialState,
   reducers: {
+    setColumns: (_, action: PayloadAction<Array<IColumn>>) => {
+      return action.payload;
+    },
     addColumn: (state, action: PayloadAction<IColumn>) => {
       state.push(action.payload);
       //TODO: seems like it would not work, need to move "save to storage logic to redux middleware"
-      columnsService.saveItems(state);
+      //columnsService.saveItems(state);
     },
   },
 });
+
+export const { setColumns, addColumn } = columnsSlice.actions;
