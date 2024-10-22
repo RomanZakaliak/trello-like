@@ -3,6 +3,7 @@ import { IColumn } from "../interfaces/column.interface";
 import { useAppDispatch, useAppSelector } from "../lib/redux/hooks";
 import { toast } from "@/hooks/use-toast";
 import { resetError } from "@/lib/redux/todo-items/todo-items.slice";
+import { MdError } from "react-icons/md";
 
 interface ItemsColumnProps {
   columnOptions: IColumn;
@@ -14,7 +15,19 @@ export const ItemsColumn: React.FC<ItemsColumnProps> = ({ columnOptions }) => {
 
   useEffect(() => {
     if (error) {
-      toast({ title: "Oh no error happens", description: error });
+      toast({
+        duration: 1000,
+        className: "bg-red-400",
+        action: (
+          <div className="w-full flex items-center gap-1">
+            <MdError className="" size={25} />
+            <div>
+              <h6 className="font-bold">Oh no error happens</h6>
+              <span>{error}</span>
+            </div>
+          </div>
+        ),
+      });
       dispatch(resetError());
     }
   }, [error]);
