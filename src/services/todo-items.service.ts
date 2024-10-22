@@ -1,4 +1,5 @@
-import ITodoItem from "../interfaces/todo-item.interface";
+import { TNewTodoItem } from "@/interfaces/types/new-todo-item.type";
+import { ITodoItem } from "../interfaces/todo-item.interface";
 import { ITodoItemsService } from "./interfaces/todo-items-service.interface";
 
 export class TodoItemsService implements ITodoItemsService {
@@ -8,15 +9,20 @@ export class TodoItemsService implements ITodoItemsService {
     this.localStorageKey = localStorageKey;
   }
 
-  add(entity: ITodoItem): Promise<void> {
+  add(entity: TNewTodoItem): Promise<ITodoItem> {
     return new Promise((resolve, _) => {
       const items = this.getItemsFromLocalStorage();
+      const newItem = {
+        ...entity,
+        id: new Date().valueOf(),
+        status: "todo",
+      } as ITodoItem;
 
-      const newItems = [...items, entity];
+      const newItems = [...items, newItem];
 
       localStorage.setItem(this.localStorageKey, JSON.stringify(newItems));
 
-      resolve();
+      resolve(newItem);
     });
   }
 
@@ -44,18 +50,18 @@ export class TodoItemsService implements ITodoItemsService {
 
   getAll(): Promise<Array<ITodoItem>> {
     return new Promise((resolve, reject) => {
-      //const items = this.getItemsFromLocalStorage();
+      const items = this.getItemsFromLocalStorage();
 
-      const items = [
-        {
-          id: 0,
-          title: "Build awesome react app",
-          description: "Make some effort to fullfil your duty 😁",
-          status: "todo",
-        },
-      ] as Array<ITodoItem>;
+      // const items = [
+      //   {
+      //     id: 0,
+      //     title: "Build awesome react app",
+      //     description: "Make some effort to fullfil your duty 😁",
+      //     status: "todo",
+      //   },
+      // ] as Array<ITodoItem>;
 
-      if (!items) reject(new Error("Unable to fetch data"));
+      if (!items?.length) reject(new Error("Unable to fetch data"));
 
       resolve(items);
     });
@@ -64,7 +70,7 @@ export class TodoItemsService implements ITodoItemsService {
   update(entity: ITodoItem): Promise<void> {
     return new Promise((resolve, reject) => {
       const items = this.getItemsFromLocalStorage();
-      if (!items) reject(new Error("Unable to fetch data"));
+      if (!items?.length) reject(new Error("Unable to fetch data"));
 
       const updatedItems = items.map((i) => (i.id !== entity.id ? i : entity));
 
@@ -77,7 +83,7 @@ export class TodoItemsService implements ITodoItemsService {
     return new Promise((resolve, reject) => {
       const items = this.getItemsFromLocalStorage();
 
-      if (!items) reject(new Error("Unable to fetch data"));
+      if (!items?.length) reject(new Error("Unable to fetch data"));
 
       const newItems = items.filter((i) => i.id !== entity.id);
       localStorage.setItem(this.localStorageKey, JSON.stringify(newItems));
@@ -87,7 +93,7 @@ export class TodoItemsService implements ITodoItemsService {
 
   private getItemsFromLocalStorage(): Array<ITodoItem> {
     const items = JSON.parse(
-      localStorage.getItem(this.localStorageKey) ?? "null",
+      localStorage.getItem(this.localStorageKey) ?? "[]",
     ) as Array<ITodoItem>;
 
     return items;

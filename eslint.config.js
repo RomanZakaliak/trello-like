@@ -26,7 +26,7 @@ export default tseslint.config(
         { allowConstantExport: true },
       ],
       "@typescript-eslint/naming-convention": "error",
-      "catch-error-name": "error",
+      "unicorn/catch-error-name": "error",
       "unicorn/filename-case": [
         "error",
         {

@@ -1,43 +1,37 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import ITodoItem from "../../../interfaces/todo-item.interface";
-import { getAllTodos } from "./todo-items.actions";
+import { createSlice } from "@reduxjs/toolkit";
+import { addTodoItem, getAllTodos } from "./todo-items.actions";
+import { ITodoItemsState } from "./todo-items-state.interface";
 
-const initialState: Array<ITodoItem> = [];
+const initialState: ITodoItemsState = {
+  data: [],
+  error: null,
+  loading: false,
+};
 
 export const todoItemSlice = createSlice({
   name: "TodoItem",
   initialState,
   reducers: {
-    addTodoItem: (state, action: PayloadAction<ITodoItem>) => {
-      state.push(action.payload);
-      //TODO: seems like it would not work, need to move "save to strage logic to redux middleware"
-      //itemsService.saveItems(state);
-    },
-
-    updateTodoItem: (state, action: PayloadAction<ITodoItem>) => {
-      const item =
-        state.find((i) => i.id === action.payload.id) ??
-        ({ id: 0 } as ITodoItem);
-      state[state.indexOf(item)] = action.payload;
-      //TODO: seems like it would not work, need to move "save to strage logic to redux middleware"
-      //itemsService.saveItems(state);
-    },
-    removeTodoItem: (state, action: PayloadAction<number>) => {
-      const newState = state.filter((item) => item.id !== action.payload);
-      //TODO: seems like it would not work, need to move "save to strage logic to redux middleware"
-      //itemsService.saveItems(newState);
-      return newState;
+    resetError: (state) => {
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getAllTodos.fulfilled, (state, action) => {
-      state = action.payload;
-      return state;
-    });
+    builder
+      .addCase(getAllTodos.fulfilled, (state, action) => {
+        state.data = action.payload;
+      })
+      .addCase(getAllTodos.rejected, (state, { payload }) => {
+        state.error = payload as string;
+      })
+      .addCase(addTodoItem.fulfilled, (state, action) => {
+        state.data.push(action.payload);
+      })
+      .addCase(addTodoItem.rejected, (state, { payload }) => {
+        state.error = payload as string;
+      });
   },
 });
 
-export const { addTodoItem, updateTodoItem, removeTodoItem } =
-  todoItemSlice.actions;
 export { getAllTodos };
-
+export const { resetError } = todoItemSlice.actions;

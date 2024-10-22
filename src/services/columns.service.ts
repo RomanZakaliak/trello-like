@@ -1,4 +1,4 @@
-import IColumn from "@/interfaces/column.interface";
+import { IColumn } from "@/interfaces/column.interface";
 import { IColumnsService } from "./interfaces/columns-service.interface";
 
 export class ColumnsService implements IColumnsService {
@@ -7,15 +7,21 @@ export class ColumnsService implements IColumnsService {
     this.localStorageKey = localStorageKey;
   }
 
-  add(entity: IColumn): Promise<void> {
+  add(entity: Omit<IColumn, "id" | "associatedStatus">): Promise<IColumn> {
     return new Promise((resolve, _) => {
       const items = this.getColumnsFromLocalStorage();
+      const newColumn: IColumn = {
+        ...entity,
+        id: new Date().valueOf(),
+        associatedStatus: entity.title.toLowerCase(),
+      };
 
-      const newItems = [...items, entity];
+      localStorage.setItem(
+        this.localStorageKey,
+        JSON.stringify([...items, newColumn]),
+      );
 
-      localStorage.setItem(this.localStorageKey, JSON.stringify(newItems));
-
-      resolve();
+      resolve(newColumn);
     });
   }
 

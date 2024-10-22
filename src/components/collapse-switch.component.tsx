@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { Switch } from "./ui/switch";
 import { Label } from "./ui/label";
 
-const CollapseSwitch: React.FC = () => {
+export const CollapseSwitch: React.FC = () => {
   const [columnsCollapse, setColumnsCollapse] = useState(false);
-  console.log(columnsCollapse);
 
   return (
     <div className="flex items-center space-x-2">
@@ -17,5 +16,3 @@ const CollapseSwitch: React.FC = () => {
     </div>
   );
 };
-
-export default CollapseSwitch;
