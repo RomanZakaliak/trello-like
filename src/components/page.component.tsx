@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../lib/redux/hooks";
 import CollapseSwitch from "./collapse-switch.component";
 import ItemsColumn from "./items-column.component";
-import { getAllTodos } from "@/lib/redux/items/todo-items.slice";
+import { getAllTodos } from "@/lib/redux/todo-items/todo-items.slice";
 import { getAllColumns } from "@/lib/redux/columns/columns.actions";
 
 function Page() {
