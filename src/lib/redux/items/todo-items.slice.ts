@@ -1,13 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ITodoItem from "../../../interfaces/todo-item.interface";
-import { todoItemsService } from "../../../services/todo-items.service";
+import { getAllTodos } from "./todo-items.actions";
 
 const initialState: Array<ITodoItem> = [];
-
-const getAllTodos = createAsyncThunk("todos/fetchAll", async () => {
-  const items = await todoItemsService.getAll();
-  return items;
-});
 
 export const todoItemSlice = createSlice({
   name: "TodoItem",
@@ -44,5 +39,5 @@ export const todoItemSlice = createSlice({
 
 export const { addTodoItem, updateTodoItem, removeTodoItem } =
   todoItemSlice.actions;
-
 export { getAllTodos };
+

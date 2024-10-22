@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { todoItemSlice } from "./items/todo-items.slice";
-import { columnsSlice } from "./columns/column.slice";
+import { columnsSlice } from "./columns/columns.slice";
 
 export const store = configureStore({
   reducer: {

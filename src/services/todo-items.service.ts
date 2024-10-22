@@ -1,41 +1,97 @@
 import ITodoItem from "../interfaces/todo-item.interface";
-import { IRepository } from "./repos/interfaces/repository.interface";
-import { TodoItemsRespository } from "./repos/todo-items.repository";
+import { ITodoItemsService } from "./interfaces/todo-items-service.interface";
 
-export class TodoItemsService {
-  private repository: IRepository<ITodoItem>;
+export class TodoItemsService implements ITodoItemsService {
+  private localStorageKey: string;
 
-  constructor(repository: IRepository<ITodoItem>) {
-    this.repository = repository;
+  constructor(localStorageKey: string) {
+    this.localStorageKey = localStorageKey;
   }
 
-  async getAll(): Promise<Array<ITodoItem>> {
-    const items = await this.repository.getAll();
+  add(entity: ITodoItem): Promise<void> {
+    return new Promise((resolve, _) => {
+      const items = this.getItemsFromLocalStorage();
+
+      const newItems = [...items, entity];
+
+      localStorage.setItem(this.localStorageKey, JSON.stringify(newItems));
+
+      resolve();
+    });
+  }
+
+  addAll(entities: ITodoItem[]): Promise<void> {
+    return new Promise((resolve, _) => {
+      localStorage.setItem(this.localStorageKey, JSON.stringify(entities));
+      resolve();
+    });
+  }
+
+  getById(id: number): Promise<ITodoItem> {
+    return new Promise((resolve, reject) => {
+      const items = this.getItemsFromLocalStorage();
+
+      if (items) {
+        const item = items.find((i) => i.id === id);
+        if (!item) reject(new Error(`Unable to find item with id: {id}`));
+
+        resolve(item!);
+      } else {
+        reject(new Error("Unable to fetch data"));
+      }
+    });
+  }
+
+  getAll(): Promise<Array<ITodoItem>> {
+    return new Promise((resolve, reject) => {
+      //const items = this.getItemsFromLocalStorage();
+
+      const items = [
+        {
+          id: 0,
+          title: "Build awesome react app",
+          description: "Make some effort to fullfil your duty 😁",
+          status: "todo",
+        },
+      ] as Array<ITodoItem>;
+
+      if (!items) reject(new Error("Unable to fetch data"));
+
+      resolve(items);
+    });
+  }
+
+  update(entity: ITodoItem): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const items = this.getItemsFromLocalStorage();
+      if (!items) reject(new Error("Unable to fetch data"));
+
+      const updatedItems = items.map((i) => (i.id !== entity.id ? i : entity));
+
+      localStorage.setItem(this.localStorageKey, JSON.stringify(updatedItems));
+      resolve();
+    });
+  }
+
+  delete(entity: ITodoItem): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const items = this.getItemsFromLocalStorage();
+
+      if (!items) reject(new Error("Unable to fetch data"));
+
+      const newItems = items.filter((i) => i.id !== entity.id);
+      localStorage.setItem(this.localStorageKey, JSON.stringify(newItems));
+      resolve();
+    });
+  }
+
+  private getItemsFromLocalStorage(): Array<ITodoItem> {
+    const items = JSON.parse(
+      localStorage.getItem(this.localStorageKey) ?? "null",
+    ) as Array<ITodoItem>;
+
     return items;
-  }
-
-  async getById(id: number): Promise<ITodoItem> {
-    const item = await this.repository.getById(id);
-    return item;
-  }
-
-  async addTodoItem(entity: ITodoItem): Promise<void> {
-    await this.repository.add(entity);
-  }
-
-  async addAllTodoItems(entities: Array<ITodoItem>): Promise<void> {
-    await this.repository.addAll(entities);
-  }
-
-  async updateTodoItem(entity: ITodoItem): Promise<void> {
-    await this.repository.update(entity);
-  }
-
-  async deleteTodoItem(entity: ITodoItem): Promise<void> {
-    await this.repository.delete(entity);
   }
 }
 
-export const todoItemsService = new TodoItemsService(
-  new TodoItemsRespository("TODO_ITEMS"),
-);
+export const todoItemsService = new TodoItemsService("TODO_ITEMS");

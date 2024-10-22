@@ -1,13 +1,8 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import IColumn from "../../../interfaces/column.interface";
-import { columnsService } from "@/services/columns.service";
+import { getAllColumns } from "./columns.actions";
 
 const initialState: Array<IColumn> = [];
-
-const getAllColumns = createAsyncThunk("columns/fetchAll", async () => {
-  const columns = await columnsService.getAll();
-  return columns;
-});
 
 export const columnsSlice = createSlice({
   name: "columns",
@@ -29,4 +24,3 @@ export const columnsSlice = createSlice({
 });
 
 export const { setColumns, addColumn } = columnsSlice.actions;
-export { getAllColumns };
