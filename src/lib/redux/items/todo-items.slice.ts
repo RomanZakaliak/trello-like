@@ -6,7 +6,6 @@ const initialState: Array<ITodoItem> = [];
 
 const getAllTodos = createAsyncThunk("todos/fetchAll", async () => {
   const items = await todoItemsService.getAll();
-  console.log(items);
   return items;
 });
 
@@ -36,8 +35,9 @@ export const todoItemSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(getAllTodos.fulfilled, (_, action) => {
-      return action.payload;
+    builder.addCase(getAllTodos.fulfilled, (state, action) => {
+      state = action.payload;
+      return state;
     });
   },
 });

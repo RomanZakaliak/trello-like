@@ -1,16 +1,15 @@
-import ITodoItem from "@/interfaces/todo-item.interface";
-import { ITodoItemsRepository } from "./interfaces/todo-items-repository.interface";
+import IColumn from "@/interfaces/column.interface";
+import { IColumnsRepository } from "./interfaces/columns-repostory.interface";
 
-export class TodoItemsRespository implements ITodoItemsRepository {
+export class ColumnsRepository implements IColumnsRepository {
   private localStorageKey: string;
-
   constructor(localStorageKey: string) {
     this.localStorageKey = localStorageKey;
   }
 
-  add(entity: ITodoItem): Promise<void> {
+  add(entity: IColumn): Promise<void> {
     return new Promise((resolve, _) => {
-      const items = this.getItemsFromLocalStorage();
+      const items = this.getColumnsFromLocalStorage();
 
       const newItems = [...items, entity];
 
@@ -20,16 +19,16 @@ export class TodoItemsRespository implements ITodoItemsRepository {
     });
   }
 
-  addAll(entities: ITodoItem[]): Promise<void> {
+  addAll(entities: IColumn[]): Promise<void> {
     return new Promise((resolve, _) => {
       localStorage.setItem(this.localStorageKey, JSON.stringify(entities));
       resolve();
     });
   }
 
-  getById(id: number): Promise<ITodoItem> {
+  getById(id: number): Promise<IColumn> {
     return new Promise((resolve, reject) => {
-      const items = this.getItemsFromLocalStorage();
+      const items = this.getColumnsFromLocalStorage();
 
       if (items) {
         const item = items.find((i) => i.id === id);
@@ -42,28 +41,36 @@ export class TodoItemsRespository implements ITodoItemsRepository {
     });
   }
 
-  getAll(): Promise<Array<ITodoItem>> {
+  getAll(): Promise<IColumn[]> {
     return new Promise((resolve, reject) => {
-      //const items = this.getItemsFromLocalStorage();
+      //const items = this.getColumnsFromLocalStorage();
 
-      const items = [
+      const columns = [
         {
           id: 0,
-          title: "Build awesome react app",
-          description: "Make some effort to fullfil your duty 😁",
-          status: "todo",
+          title: "ToDo",
+          associatedStatus: "todo",
         },
-      ] as Array<ITodoItem>;
+        {
+          id: 1,
+          title: "In Progress",
+          associatedStatus: "in_progress",
+        },
+        {
+          id: 2,
+          title: "Done",
+          associatedStatus: "done",
+        },
+      ];
 
-      if (!items) reject(new Error("Unable to fetch data"));
+      if (!columns) reject(new Error("Unable to fetch data"));
 
-      resolve(items);
+      resolve(columns);
     });
   }
-
-  update(entity: ITodoItem): Promise<void> {
+  update(entity: IColumn): Promise<void> {
     return new Promise((resolve, reject) => {
-      const items = this.getItemsFromLocalStorage();
+      const items = this.getColumnsFromLocalStorage();
       if (!items) reject(new Error("Unable to fetch data"));
 
       const updatedItems = items.map((i) => (i.id !== entity.id ? i : entity));
@@ -73,9 +80,9 @@ export class TodoItemsRespository implements ITodoItemsRepository {
     });
   }
 
-  delete(entity: ITodoItem): Promise<void> {
+  delete(entity: IColumn): Promise<void> {
     return new Promise((resolve, reject) => {
-      const items = this.getItemsFromLocalStorage();
+      const items = this.getColumnsFromLocalStorage();
 
       if (!items) reject(new Error("Unable to fetch data"));
 
@@ -85,10 +92,10 @@ export class TodoItemsRespository implements ITodoItemsRepository {
     });
   }
 
-  private getItemsFromLocalStorage(): Array<ITodoItem> {
+  private getColumnsFromLocalStorage(): Array<IColumn> {
     const items = JSON.parse(
       localStorage.getItem(this.localStorageKey) ?? "null",
-    ) as Array<ITodoItem>;
+    ) as Array<IColumn>;
 
     return items;
   }
