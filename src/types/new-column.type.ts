@@ -1,3 +1,3 @@
-import { IColumn } from "@/interfaces/column.interface";
+import { IColumn } from '@/interfaces/column.interface';
 
-export type TNewColumn = Omit<IColumn, "id" | "associatedStatus">;
+export type TNewColumn = Omit<IColumn, 'id' | 'associatedStatus'>;

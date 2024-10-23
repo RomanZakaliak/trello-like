@@ -1,8 +1,8 @@
-import React from "react";
-import { Switch } from "./ui/switch";
-import { Label } from "./ui/label";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import { updateCollumnsCollapse } from "@/lib/redux/settings/settings.slice";
+import React from 'react';
+import { Switch } from './ui/switch';
+import { Label } from './ui/label';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { updateCollumnsCollapse } from '@/lib/redux/settings/settings.slice';
 
 export const CollapseSwitch: React.FC = () => {
   const { collapseEmptyColumns } = useAppSelector((state) => state.settings);

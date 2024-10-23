@@ -1,13 +1,13 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { ISettingState } from "./settings-state.interface";
-import { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
+import { ISettingState } from './settings-state.interface';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 export const initialState: ISettingState = {
   collapseEmptyColumns: false,
 };
 
 export const settingsSlice = createSlice({
-  name: "Settings",
+  name: 'Settings',
   initialState,
   reducers: {
     updateCollumnsCollapse: (state, action: PayloadAction<boolean>) => {

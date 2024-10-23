@@ -1,12 +1,12 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { todoItemSlice } from "./todo-items/todo-items.slice";
-import { columnsSlice } from "./columns/columns.slice";
-import { ColumnsService, columnsService } from "@/services/columns.service";
+import { configureStore } from '@reduxjs/toolkit';
+import { todoItemSlice } from './todo-items/todo-items.slice';
+import { columnsSlice } from './columns/columns.slice';
+import { ColumnsService, columnsService } from '@/services/columns.service';
 import {
   TodoItemsService,
   todoItemsService,
-} from "@/services/todo-items.service";
-import { settingsSlice } from "./settings/settings.slice";
+} from '@/services/todo-items.service';
+import { settingsSlice } from './settings/settings.slice';
 
 export interface ThunkExtraArgs {
   columnsService: ColumnsService;

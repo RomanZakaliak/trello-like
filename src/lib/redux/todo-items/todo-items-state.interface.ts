@@ -1,4 +1,4 @@
-import { ITodoItem } from "@/interfaces/todo-item.interface";
+import { ITodoItem } from '@/interfaces/todo-item.interface';
 
 export interface ITodoItemsState {
   data: Array<ITodoItem>;

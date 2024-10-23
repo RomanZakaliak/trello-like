@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { addNewColumn, getAllColumns } from "./columns.actions";
-import { IColumnsState } from "./columns-state.interface";
-import { IColumn } from "@/interfaces/column.interface";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { addNewColumn, getAllColumns } from './columns.actions';
+import { IColumnsState } from './columns-state.interface';
+import { IColumn } from '@/interfaces/column.interface';
 
 const initialState: IColumnsState = {
   data: [],
@@ -9,7 +9,7 @@ const initialState: IColumnsState = {
 };
 
 export const columnsSlice = createSlice({
-  name: "columns",
+  name: 'columns',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
@@ -19,7 +19,7 @@ export const columnsSlice = createSlice({
         (state, action: PayloadAction<Array<IColumn>>) => {
           state.data = action.payload;
           return state;
-        },
+        }
       )
       .addCase(getAllColumns.rejected, (state, action) => {
         state.error = action.payload as string;

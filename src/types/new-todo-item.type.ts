@@ -1,3 +1,3 @@
-import { ITodoItem } from "../interfaces/todo-item.interface";
+import { ITodoItem } from '../interfaces/todo-item.interface';
 
-export type TNewTodoItem = Omit<ITodoItem, "id" | "status">;
+export type TNewTodoItem = Omit<ITodoItem, 'id' | 'status'>;
