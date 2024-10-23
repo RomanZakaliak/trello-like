@@ -13,7 +13,7 @@ function Page() {
   useEffect(() => {
     dispatch(getAllColumns());
     dispatch(getAllTodos());
-  }, []);
+  }, [dispatch]);
 
   return (
     <>

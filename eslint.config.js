@@ -1,38 +1,48 @@
-import js from "@eslint/js";
-import globals from "globals";
-import reactHooks from "eslint-plugin-react-hooks";
-import reactRefresh from "eslint-plugin-react-refresh";
-import tseslint from "typescript-eslint";
-import eslintPluginUnicorn from "eslint-plugin-unicorn";
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 
 export default tseslint.config(
-  { ignores: ["dist"] },
+  {
+    ignores: ['dist', 'src/components/ui/**', 'src/hooks/use-toast.ts'],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ["**/*.{ts,tsx}"],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
       globals: globals.browser,
     },
     plugins: {
-      "react-hooks": reactHooks,
-      "react-refresh": reactRefresh,
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
       unicorn: eslintPluginUnicorn,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
-      "react-refresh/only-export-components": [
-        "warn",
+      'react-refresh/only-export-components': [
+        'warn',
         { allowConstantExport: true },
       ],
-      "@typescript-eslint/naming-convention": "error",
-      "unicorn/catch-error-name": "error",
-      "unicorn/filename-case": [
-        "error",
+      '@typescript-eslint/naming-convention': [
+        'error',
         {
-          case: "kebabCase",
+          selector: 'function',
+          format: ['PascalCase', 'camelCase'],
+        },
+      ],
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-empty-object-type': 'warn',
+      'unicorn/catch-error-name': 'error',
+      'unicorn/filename-case': [
+        'error',
+        {
+          case: 'kebabCase',
         },
       ],
     },
-  },
+  }
 );

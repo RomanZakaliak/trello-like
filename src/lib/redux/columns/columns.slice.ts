@@ -10,8 +10,7 @@ const initialState: IColumnsState = {
 export const columnsSlice = createSlice({
   name: "columns",
   initialState,
-  reducers: {
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getAllColumns.fulfilled, (state, action) => {

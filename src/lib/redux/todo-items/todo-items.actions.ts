@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ThunkExtraArgs } from "../store";
-import { TNewTodoItem } from "@/interfaces/types/new-todo-item.type";
+import { TNewTodoItem } from "@/types/new-todo-item.type";
 
 export const getAllTodos = createAsyncThunk<
   any,

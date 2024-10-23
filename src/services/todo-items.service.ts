@@ -1,4 +1,4 @@
-import { TNewTodoItem } from "@/interfaces/types/new-todo-item.type";
+import { TNewTodoItem } from "@/types/new-todo-item.type";
 import { ITodoItem } from "../interfaces/todo-item.interface";
 import { ITodoItemsService } from "./interfaces/todo-items-service.interface";
 
@@ -10,7 +10,7 @@ export class TodoItemsService implements ITodoItemsService {
   }
 
   add(entity: TNewTodoItem): Promise<ITodoItem> {
-    return new Promise((resolve, _) => {
+    return new Promise((resolve) => {
       const items = this.getItemsFromLocalStorage();
       const newItem = {
         ...entity,
@@ -27,7 +27,7 @@ export class TodoItemsService implements ITodoItemsService {
   }
 
   addAll(entities: ITodoItem[]): Promise<void> {
-    return new Promise((resolve, _) => {
+    return new Promise((resolve) => {
       localStorage.setItem(this.localStorageKey, JSON.stringify(entities));
       resolve();
     });

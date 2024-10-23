@@ -3,13 +3,11 @@ import Page from "./components/page.component";
 import { store } from "./lib/redux/store";
 import { Toaster } from "./components/ui/toaster";
 
-function App() {
+export const App = () => {
   return (
     <Provider store={store}>
       <Page />
       <Toaster />
     </Provider>
   );
-}
-
-export default App;
+};

@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ThunkExtraArgs } from "../store";
 
 export const getAllColumns = createAsyncThunk<
-  any,
+  unknown,
   void,
   { extra: ThunkExtraArgs }
 >("columns/fetchAll", async (_payload, { extra, rejectWithValue }) => {

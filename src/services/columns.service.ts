@@ -8,7 +8,7 @@ export class ColumnsService implements IColumnsService {
   }
 
   add(entity: Omit<IColumn, "id" | "associatedStatus">): Promise<IColumn> {
-    return new Promise((resolve, _) => {
+    return new Promise((resolve) => {
       const items = this.getColumnsFromLocalStorage();
       const newColumn: IColumn = {
         ...entity,
@@ -26,7 +26,7 @@ export class ColumnsService implements IColumnsService {
   }
 
   addAll(entities: IColumn[]): Promise<void> {
-    return new Promise((resolve, _) => {
+    return new Promise((resolve) => {
       localStorage.setItem(this.localStorageKey, JSON.stringify(entities));
       resolve();
     });
