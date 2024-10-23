@@ -1,24 +1,49 @@
-import { IColumn } from "@/interfaces/column.interface";
-import { IColumnsService } from "./interfaces/columns-service.interface";
+import { IColumn } from '@/interfaces/column.interface';
+import { IColumnsService } from './interfaces/columns-service.interface';
+import { TNewColumn } from '@/types/new-column.type';
+
+const initialColumns = [
+  {
+    id: 0,
+    title: 'ToDo',
+    associatedStatus: 'todo',
+  },
+  {
+    id: 1,
+    title: 'In Progress',
+    associatedStatus: 'in_progress',
+  },
+  {
+    id: 2,
+    title: 'Done',
+    associatedStatus: 'done',
+  },
+];
 
 export class ColumnsService implements IColumnsService {
   private localStorageKey: string;
+
   constructor(localStorageKey: string) {
     this.localStorageKey = localStorageKey;
+
+    const items = this.getColumnsFromLocalStorage();
+    if (!items?.length) {
+      this.addAll(initialColumns).then(() => console.log('executed'));
+    }
   }
 
-  add(entity: Omit<IColumn, "id" | "associatedStatus">): Promise<IColumn> {
+  add(entity: TNewColumn): Promise<IColumn> {
     return new Promise((resolve) => {
       const items = this.getColumnsFromLocalStorage();
       const newColumn: IColumn = {
         ...entity,
         id: new Date().valueOf(),
-        associatedStatus: entity.title.toLowerCase(),
+        associatedStatus: entity.title.toLowerCase() + new Date().valueOf(),
       };
 
       localStorage.setItem(
         this.localStorageKey,
-        JSON.stringify([...items, newColumn]),
+        JSON.stringify([...items, newColumn])
       );
 
       resolve(newColumn);
@@ -42,47 +67,30 @@ export class ColumnsService implements IColumnsService {
 
         resolve(item!);
       } else {
-        reject(new Error("Unable to fetch data"));
+        reject(new Error('Unable to fetch data'));
       }
     });
   }
 
   getAll(): Promise<IColumn[]> {
     return new Promise((resolve, reject) => {
-      //const items = this.getColumnsFromLocalStorage();
+      const columns = this.getColumnsFromLocalStorage();
 
-      const columns = [
-        {
-          id: 0,
-          title: "ToDo",
-          associatedStatus: "todo",
-        },
-        {
-          id: 1,
-          title: "In Progress",
-          associatedStatus: "in_progress",
-        },
-        {
-          id: 2,
-          title: "Done",
-          associatedStatus: "done",
-        },
-      ];
-
-      if (!columns) reject(new Error("Unable to fetch data"));
+      if (!columns) reject(new Error('Unable to fetch data'));
 
       resolve(columns);
     });
   }
-  update(entity: IColumn): Promise<void> {
+
+  update(entity: IColumn): Promise<IColumn> {
     return new Promise((resolve, reject) => {
       const items = this.getColumnsFromLocalStorage();
-      if (!items) reject(new Error("Unable to fetch data"));
+      if (!items) reject(new Error('Unable to fetch data'));
 
       const updatedItems = items.map((i) => (i.id !== entity.id ? i : entity));
 
       localStorage.setItem(this.localStorageKey, JSON.stringify(updatedItems));
-      resolve();
+      resolve(entity);
     });
   }
 
@@ -90,7 +98,7 @@ export class ColumnsService implements IColumnsService {
     return new Promise((resolve, reject) => {
       const items = this.getColumnsFromLocalStorage();
 
-      if (!items) reject(new Error("Unable to fetch data"));
+      if (!items) reject(new Error('Unable to fetch data'));
 
       const newItems = items.filter((i) => i.id !== entity.id);
       localStorage.setItem(this.localStorageKey, JSON.stringify(newItems));
@@ -100,11 +108,11 @@ export class ColumnsService implements IColumnsService {
 
   private getColumnsFromLocalStorage(): Array<IColumn> {
     const items = JSON.parse(
-      localStorage.getItem(this.localStorageKey) ?? "null",
+      localStorage.getItem(this.localStorageKey) || '[]'
     ) as Array<IColumn>;
 
     return items;
   }
 }
 
-export const columnsService = new ColumnsService("TODO_COLUMNS");
+export const columnsService = new ColumnsService('TODO_COLUMNS');

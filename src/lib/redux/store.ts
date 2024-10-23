@@ -6,6 +6,7 @@ import {
   TodoItemsService,
   todoItemsService,
 } from "@/services/todo-items.service";
+import { settingsSlice } from "./settings/settings.slice";
 
 export interface ThunkExtraArgs {
   columnsService: ColumnsService;
@@ -16,6 +17,7 @@ export const store = configureStore({
   reducer: {
     todoItems: todoItemSlice.reducer,
     columns: columnsSlice.reducer,
+    settings: settingsSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
