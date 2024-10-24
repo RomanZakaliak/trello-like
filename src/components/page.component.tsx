@@ -9,6 +9,7 @@ import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 import { DialogTitle } from '@radix-ui/react-dialog';
 import { useTranslation } from 'react-i18next';
+import { Header } from './header.component';
 
 function Page() {
   const { t } = useTranslation();
@@ -22,6 +23,7 @@ function Page() {
 
   return (
     <div className="min-h-[100vh] bg-slate-50">
+      <Header></Header>
       <div className="flex justify-center gap-3 py-2">
         <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>

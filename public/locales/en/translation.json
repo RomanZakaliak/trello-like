@@ -1,0 +1,21 @@
+{
+  "createNewTodoButton": "Create new ToDo",
+  "createTodoTitle": "Create ToDo",
+  "addTodoButton": "Add ToDo",
+  "todoFormTitlePlaceholder": "Cook dishes",
+  "titleName": "Title",
+  "desriptionName": "Description",
+  "todoFormDescriptionPlaceholder": "Prepare ingredients and cook dinner",
+  "addColumnButton": "Add column",
+  "columnFormTitlePlaceholder": "In Superposition",
+  "collapseColumnsLabel": "Collapse empty columns",
+  "columnFormTitle": "New Column",
+  "addColumnSchemaTitleErrorMin": "Title cannot be empty",
+  "addColumnsSchemaTitleErrorMax": "Title should be less than 50 symbols",
+  "addTodoSchemaErrorTitleMin": "Title cannot be empty",
+  "addTodoShemaErrorTitleMax": "Title should be less than 200 symbols",
+  "addTodosSchemaDescriptionMax": "Description should be less than 500 symbols",
+  "toastErrorTitle": "Oh no, an error occurred",
+  "statusesSelectLabel": "Statuses",
+  "changeStatusValuePlaceholder": "Change status"
+}
