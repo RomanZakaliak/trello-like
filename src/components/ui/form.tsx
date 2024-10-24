@@ -10,8 +10,10 @@ import {
   useFormContext,
 } from "react-hook-form"
 
+
 import { cn } from "@/lib/utils"
 import { Label } from "@/components/ui/label"
+import { useTranslation } from "react-i18next"
 
 const Form = FormProvider
 
@@ -143,14 +145,16 @@ FormDescription.displayName = "FormDescription"
 const FormMessage = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
->(({ className, children, ...props }, ref) => {
+  >(({ className, children, ...props }, ref) => {
+  const { t, i18n } = useTranslation()
   const { error, formMessageId } = useFormField()
   const body = error ? String(error?.message) : children
 
   if (!body) {
     return null
   }
-
+  
+    
   return (
     <p
       ref={ref}
@@ -158,7 +162,7 @@ const FormMessage = React.forwardRef<
       className={cn("text-sm font-medium text-red-500 dark:text-red-900", className)}
       {...props}
     >
-      {body}
+      {i18n.exists(body as string) ? t(body as string) : body}
     </p>
   )
 })

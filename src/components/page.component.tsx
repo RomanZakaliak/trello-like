@@ -8,8 +8,10 @@ import { ColumnsContainer } from './columns-container.component';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 import { DialogTitle } from '@radix-ui/react-dialog';
+import { useTranslation } from 'react-i18next';
 
 function Page() {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -19,14 +21,14 @@ function Page() {
   }, [dispatch]);
 
   return (
-    <>
+    <div className="min-h-[100vh] bg-slate-50">
       <div className="flex justify-center gap-3 py-2">
         <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
           <DialogTrigger asChild>
-            <Button>Create new ToDo</Button>
+            <Button>{t('createNewTodoButton')}</Button>
           </DialogTrigger>
           <DialogContent className="w-full sm:w-3/4 md:w-1/2 lg:w-1/3">
-            <DialogTitle>Create ToDo</DialogTitle>
+            <DialogTitle>{t('createTodoTitle')}</DialogTitle>
             <AddTodoForm
               onFormSubmit={() => {
                 setIsOpen(false);
@@ -40,7 +42,7 @@ function Page() {
       <main className="overflow-x-hidden">
         <ColumnsContainer />
       </main>
-    </>
+    </div>
   );
 }
 

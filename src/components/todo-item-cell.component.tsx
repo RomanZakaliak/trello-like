@@ -1,4 +1,4 @@
-import { ITodoItem } from '@/interfaces/todo-item.interface';
+import { ITodoItem } from '@/common/interfaces/todo-item.interface';
 import React from 'react';
 import {
   Select,
@@ -9,9 +9,10 @@ import {
   SelectValue,
 } from './ui/select';
 import { SelectTrigger } from '@radix-ui/react-select';
-import { IColumn } from '@/interfaces/column.interface';
+import { IColumn } from '@/common/interfaces/column.interface';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { updateTodoItem } from '@/lib/redux/todo-items/todo-items.actions';
+import { useTranslation } from 'react-i18next';
 
 interface ITodoItemCellProps {
   todoItem: ITodoItem;
@@ -22,6 +23,7 @@ export const TodoItemCell: React.FC<ITodoItemCellProps> = ({
   todoItem,
   columns,
 }) => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
   const handleSelectChange = (newItemStatus: string) => {
@@ -39,11 +41,11 @@ export const TodoItemCell: React.FC<ITodoItemCellProps> = ({
 
       <Select onValueChange={handleSelectChange}>
         <SelectTrigger className="my-1 h-10 w-[90%] rounded-md bg-black text-sm text-white">
-          <SelectValue placeholder="Change status" />
+          <SelectValue placeholder={t('changeStatusValuePlaceholder')} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>Statuses</SelectLabel>
+            <SelectLabel>{t('statusesSelectLabel')}</SelectLabel>
             {columns.map((c) => (
               <SelectItem key={c.id} value={c.associatedStatus}>
                 {c.title}

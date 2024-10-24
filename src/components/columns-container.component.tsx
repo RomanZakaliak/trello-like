@@ -6,9 +6,11 @@ import { toast } from '@/hooks/use-toast';
 import { resetError } from '@/lib/redux/todo-items/todo-items.slice';
 import { MdError } from 'react-icons/md';
 import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const widthClass: string = ' w-80 min-w-80';
 export const ColumnsContainer = () => {
+  const { t } = useTranslation();
   const { data: columnsdata } = useAppSelector((state) => state.columns);
   const { data: todoItemsData, error } = useAppSelector(
     (state) => state.todoItems
@@ -25,7 +27,7 @@ export const ColumnsContainer = () => {
           <div className="flex w-full items-center gap-1">
             <MdError className="" size={25} />
             <div>
-              <h6 className="font-bold">Oh no error happens</h6>
+              <h6 className="font-bold">{t('toastErrorTitle')}</h6>
               <span>{error}</span>
             </div>
           </div>
@@ -50,7 +52,7 @@ export const ColumnsContainer = () => {
 
       <Card className={'h-fit' + widthClass}>
         <CardHeader>
-          <CardTitle>New Column</CardTitle>
+          <CardTitle>{t('columnFormTitle')}</CardTitle>
         </CardHeader>
         <CardContent>
           <AddColumnForm />

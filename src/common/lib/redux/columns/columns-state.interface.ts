@@ -1,4 +1,4 @@
-import { IColumn } from '@/interfaces/column.interface';
+import { IColumn } from '@/common/interfaces/column.interface';
 
 export interface IColumnsState {
   data: Array<IColumn>;

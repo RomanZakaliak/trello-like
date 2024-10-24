@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { addNewColumn, getAllColumns } from './columns.actions';
 import { IColumnsState } from './columns-state.interface';
-import { IColumn } from '@/interfaces/column.interface';
+import { IColumn } from '@/common/interfaces/column.interface';
 
 const initialState: IColumnsState = {
   data: [],

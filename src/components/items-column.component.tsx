@@ -1,9 +1,9 @@
-import { IColumn } from '../interfaces/column.interface';
+import { IColumn } from '../common/interfaces/column.interface';
 import { useAppSelector } from '../lib/redux/hooks';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { getAbbreviation } from '@/lib/app-utils';
 import { TodoItemCell } from './todo-item-cell.component';
-import { ITodoItem } from '@/interfaces/todo-item.interface';
+import { ITodoItem } from '@/common/interfaces/todo-item.interface';
 
 interface ItemsColumnProps {
   columnOptions: IColumn;

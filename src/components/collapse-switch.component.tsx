@@ -3,8 +3,10 @@ import { Switch } from './ui/switch';
 import { Label } from './ui/label';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { updateCollumnsCollapse } from '@/lib/redux/settings/settings.slice';
+import { useTranslation } from 'react-i18next';
 
 export const CollapseSwitch: React.FC = () => {
+  const { t } = useTranslation();
   const { collapseEmptyColumns } = useAppSelector((state) => state.settings);
   const dispatch = useAppDispatch();
 
@@ -15,7 +17,7 @@ export const CollapseSwitch: React.FC = () => {
         checked={collapseEmptyColumns}
         onCheckedChange={(checked) => dispatch(updateCollumnsCollapse(checked))}
       />
-      <Label htmlFor="collapse-collumns">Collapse empty columns</Label>
+      <Label htmlFor="collapse-collumns">{t('collapseColumnsLabel')}</Label>
     </div>
   );
 };
