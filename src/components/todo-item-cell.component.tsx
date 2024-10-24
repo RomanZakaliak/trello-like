@@ -10,8 +10,8 @@ import {
 } from './ui/select';
 import { SelectTrigger } from '@radix-ui/react-select';
 import { IColumn } from '@/common/interfaces/column.interface';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { updateTodoItem } from '@/lib/redux/todo-items/todo-items.actions';
+import { useAppDispatch } from '@/common/lib/redux/hooks';
+import { updateTodoItem } from '@/common/lib/redux/todo-items/todo-items.actions';
 import { useTranslation } from 'react-i18next';
 
 interface ITodoItemCellProps {

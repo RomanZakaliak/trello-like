@@ -1,9 +1,9 @@
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/common/lib/redux/hooks';
 import { ItemsColumn } from './items-column.component';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { AddColumnForm } from './add-column-form.component';
 import { toast } from '@/hooks/use-toast';
-import { resetError } from '@/lib/redux/todo-items/todo-items.slice';
+import { resetError } from '@/common/lib/redux/todo-items/todo-items.slice';
 import { MdError } from 'react-icons/md';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';

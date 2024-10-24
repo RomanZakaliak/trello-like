@@ -13,8 +13,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { addTodoFormSchema } from '../sсhemas/add-todo-form.schema';
 import { Textarea } from '../components/ui/textarea';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { addTodoItem } from '@/lib/redux/todo-items/todo-items.actions';
+import { useAppDispatch } from '@/common/lib/redux/hooks';
+import { addTodoItem } from '@/common/lib/redux/todo-items/todo-items.actions';
 import { useTranslation } from 'react-i18next';
 
 interface AddTodoFormProps {

@@ -5,8 +5,8 @@ import { addColumnFormSchema } from '@/sсhemas/add-column-form.schema';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useAppDispatch } from '@/lib/redux/hooks';
-import { addNewColumn } from '@/lib/redux/columns/columns.actions';
+import { useAppDispatch } from '@/common/lib/redux/hooks';
+import { addNewColumn } from '@/common/lib/redux/columns/columns.actions';
 import { useTranslation } from 'react-i18next';
 
 export const AddColumnForm = () => {
@@ -37,7 +37,10 @@ export const AddColumnForm = () => {
             <FormItem className="w-full">
               <FormMessage />
               <FormControl>
-                <Input placeholder={ t('columnFormTitlePlaceholder')} {...field} />
+                <Input
+                  placeholder={t('columnFormTitlePlaceholder')}
+                  {...field}
+                />
               </FormControl>
             </FormItem>
           )}

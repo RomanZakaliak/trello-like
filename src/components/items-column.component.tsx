@@ -1,7 +1,7 @@
 import { IColumn } from '../common/interfaces/column.interface';
-import { useAppSelector } from '../lib/redux/hooks';
+import { useAppSelector } from '@/common/lib/redux/hooks';
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
-import { getAbbreviation } from '@/lib/app-utils';
+import { getAbbreviation } from '@/common/lib/app-utils';
 import { TodoItemCell } from './todo-item-cell.component';
 import { ITodoItem } from '@/common/interfaces/todo-item.interface';
 

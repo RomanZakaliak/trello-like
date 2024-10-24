@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useAppDispatch } from '../lib/redux/hooks';
+import { useAppDispatch } from '@/common/lib/redux/hooks';
 import { CollapseSwitch } from './collapse-switch.component';
-import { getAllColumns } from '@/lib/redux/columns/columns.actions';
+import { getAllColumns } from '@/common/lib/redux/columns/columns.actions';
 import { AddTodoForm } from './add-todo-form.component';
-import { getAllTodos } from '@/lib/redux/todo-items/todo-items.actions';
+import { getAllTodos } from '@/common/lib/redux/todo-items/todo-items.actions';
 import { ColumnsContainer } from './columns-container.component';
 import { Button } from './ui/button';
 import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';

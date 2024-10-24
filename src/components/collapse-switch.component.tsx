@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch } from './ui/switch';
 import { Label } from './ui/label';
-import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
-import { updateCollumnsCollapse } from '@/lib/redux/settings/settings.slice';
+import { useAppDispatch, useAppSelector } from '@/common/lib/redux/hooks';
+import { updateCollumnsCollapse } from '@/common/lib/redux/settings/settings.slice';
 import { useTranslation } from 'react-i18next';
 
 export const CollapseSwitch: React.FC = () => {
