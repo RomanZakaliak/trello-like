@@ -1,6 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ThunkExtraArgs } from '../store';
-import { TNewColumn } from '@/types/new-column.type';
+import { TNewColumn } from '@/common/types/new-column.type';
 
 export const getAllColumns = createAsyncThunk<
   any,

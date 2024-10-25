@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { Button } from '../components/ui/button';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -7,14 +7,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '../components/ui/form';
-import { Input } from '../components/ui/input';
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { addTodoFormSchema } from '../sсhemas/add-todo-form.schema';
-import { Textarea } from '../components/ui/textarea';
-import { useAppDispatch } from '@/common/lib/redux/hooks';
-import { addTodoItem } from '@/common/lib/redux/todo-items/todo-items.actions';
+import { addTodoFormSchema } from '@/sсhemas/add-todo-form.schema';
+import { Textarea } from '@/components/ui/textarea';
+import { useAppDispatch } from '@/lib/redux/hooks';
+import { addTodoItem } from '@/lib/redux/todo-items/todo-items.actions';
 import { useTranslation } from 'react-i18next';
 
 interface AddTodoFormProps {
@@ -61,7 +61,7 @@ export const AddTodoForm: React.FC<AddTodoFormProps> = ({ onFormSubmit }) => {
           name="description"
           render={({ field }) => (
             <FormItem className="w-full">
-              <FormLabel>{t('desriptionName')}</FormLabel>
+              <FormLabel>{t('descriptionName')}</FormLabel>
               <FormMessage />
               <FormControl>
                 <Textarea

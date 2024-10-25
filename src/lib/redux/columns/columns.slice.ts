@@ -11,7 +11,11 @@ const initialState: IColumnsState = {
 export const columnsSlice = createSlice({
   name: 'columns',
   initialState,
-  reducers: {},
+  reducers: {
+    resetColumnsError: (state) => {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(
@@ -32,3 +36,5 @@ export const columnsSlice = createSlice({
       });
   },
 });
+
+export const { resetColumnsError } = columnsSlice.actions;

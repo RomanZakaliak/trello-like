@@ -10,10 +10,10 @@ export const settingsSlice = createSlice({
   name: 'Settings',
   initialState,
   reducers: {
-    updateCollumnsCollapse: (state, action: PayloadAction<boolean>) => {
+    updateColumnsCollapse: (state, action: PayloadAction<boolean>) => {
       state.collapseEmptyColumns = action.payload;
     },
   },
 });
 
-export const { updateCollumnsCollapse } = settingsSlice.actions;
+export const { updateColumnsCollapse } = settingsSlice.actions;

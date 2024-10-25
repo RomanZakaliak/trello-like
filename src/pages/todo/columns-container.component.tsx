@@ -1,56 +1,58 @@
-import { useAppDispatch, useAppSelector } from '@/common/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
 import { ItemsColumn } from './items-column.component';
-import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '../../components/ui/card';
 import { AddColumnForm } from './add-column-form.component';
 import { toast } from '@/hooks/use-toast';
-import { resetError } from '@/common/lib/redux/todo-items/todo-items.slice';
-import { MdError } from 'react-icons/md';
+import { resetTodoError } from '@/lib/redux/todo-items/todo-items.slice';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { resetColumnsError } from '@/lib/redux/columns/columns.slice';
+import { ErrorToastContent } from '@/components/error-toast-content.component';
 
-const widthClass: string = ' w-80 min-w-80';
 export const ColumnsContainer = () => {
   const { t } = useTranslation();
-  const { data: columnsdata } = useAppSelector((state) => state.columns);
-  const { data: todoItemsData, error } = useAppSelector(
+  const { data: columnsData, error: columnsError } = useAppSelector(
+    (state) => state.columns
+  );
+  const { data: todoItemsData, error: todoError } = useAppSelector(
     (state) => state.todoItems
   );
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
+    const error = columnsError || todoError;
+
     if (error) {
       toast({
         duration: 1000,
         className: 'bg-red-400',
-        action: (
-          <div className="flex w-full items-center gap-1">
-            <MdError className="" size={25} />
-            <div>
-              <h6 className="font-bold">{t('toastErrorTitle')}</h6>
-              <span>{error}</span>
-            </div>
-          </div>
-        ),
+        action: <ErrorToastContent errorMessage={error} />,
       });
-      dispatch(resetError());
+
+      todoError && dispatch(resetTodoError());
+      columnsError && dispatch(resetColumnsError());
     }
-  }, [error, dispatch]);
+  }, [columnsError, todoError, dispatch, t]);
 
   return (
     <div className="flex flex-row gap-10 overflow-x-auto px-4">
-      {columnsdata.map((column) => {
+      {columnsData.map((column) => {
         return (
           <ItemsColumn
             key={column.id}
             columnOptions={column}
-            widthClass={widthClass}
             todoItems={todoItemsData}
           />
         );
       })}
 
-      <Card className={'h-fit' + widthClass}>
+      <Card className={'h-fit w-80 min-w-80'}>
         <CardHeader>
           <CardTitle>{t('columnFormTitle')}</CardTitle>
         </CardHeader>

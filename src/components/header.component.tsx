@@ -5,8 +5,9 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from './ui/select';
-import { ELanguage } from '@/common/Enums/language.enum';
+} from '@/components/ui/select';
+import { Language } from '@/common/enums/language.enum';
+import { Link } from 'react-router-dom';
 
 export const Header = () => {
   const { i18n } = useTranslation();
@@ -16,7 +17,7 @@ export const Header = () => {
       <div>Logo goes here</div>
       <nav>
         <ul>
-          <li>Navigation goes here</li>
+          <Link to="/">ToDo</Link>
         </ul>
       </nav>
 
@@ -28,8 +29,10 @@ export const Header = () => {
           <SelectValue placeholder={i18n.language} />
         </SelectTrigger>
         <SelectContent>
-          {Object.entries(ELanguage).map(([key, value]) => (
-            <SelectItem value={value}>{key}</SelectItem>
+          {Object.entries(Language).map(([key, value]) => (
+            <SelectItem value={value} key={key}>
+              {key}
+            </SelectItem>
           ))}
         </SelectContent>
       </Select>

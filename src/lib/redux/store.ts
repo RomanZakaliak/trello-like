@@ -4,11 +4,11 @@ import { columnsSlice } from './columns/columns.slice';
 import {
   ColumnsService,
   columnsService,
-} from '@/common/services/columns.service';
+} from '@/services/columns.service';
 import {
   TodoItemsService,
   todoItemsService,
-} from '@/common/services/todo-items.service';
+} from '@/services/todo-items.service';
 import { settingsSlice } from './settings/settings.slice';
 
 export interface ThunkExtraArgs {

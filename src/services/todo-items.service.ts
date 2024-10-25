@@ -1,4 +1,4 @@
-import { TNewTodoItem } from '@/types/new-todo-item.type';
+import { TNewTodoItem } from '@/common/types/new-todo-item.type';
 import { ITodoItem } from '../common/interfaces/todo-item.interface';
 import { ITodoItemsService } from './interfaces/todo-items-service.interface';
 

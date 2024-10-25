@@ -1,13 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ThunkExtraArgs } from '../store';
-import { TNewTodoItem } from '@/types/new-todo-item.type';
+import { TNewTodoItem } from '@/common/types/new-todo-item.type';
 import { ITodoItem } from '@/common/interfaces/todo-item.interface';
 
-export const getAllTodos = createAsyncThunk<
+export const getAllTodo = createAsyncThunk<
   any,
   void,
   { extra: ThunkExtraArgs }
->('todos/fetchAll', async (_payload, { extra, rejectWithValue }) => {
+>('todo/fetchAll', async (_payload, { extra, rejectWithValue }) => {
   try {
     const items = await extra.todoItemsService.getAll();
     return items;
@@ -21,7 +21,7 @@ export const addTodoItem = createAsyncThunk<
   any,
   TNewTodoItem,
   { extra: ThunkExtraArgs }
->('todos/addNew', async (payload, { extra, rejectWithValue }) => {
+>('todo/addNew', async (payload, { extra, rejectWithValue }) => {
   try {
     const newTodo = await extra.todoItemsService.add(payload);
     return newTodo;
@@ -34,7 +34,7 @@ export const updateTodoItem = createAsyncThunk<
   any,
   ITodoItem,
   { extra: ThunkExtraArgs }
->('todos/updateTodo', async (payload, { extra, rejectWithValue }) => {
+>('todo/updateTodo', async (payload, { extra, rejectWithValue }) => {
   try {
     const updatedTodo = await extra.todoItemsService.update(payload);
     return updatedTodo;

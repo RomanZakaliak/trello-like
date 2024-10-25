@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addTodoItem, getAllTodos, updateTodoItem } from './todo-items.actions';
+import { addTodoItem, getAllTodo, updateTodoItem } from './todo-items.actions';
 import { ITodoItemsState } from './todo-items-state.interface';
 
 const initialState: ITodoItemsState = {
@@ -12,16 +12,16 @@ export const todoItemSlice = createSlice({
   name: 'TodoItem',
   initialState,
   reducers: {
-    resetError: (state) => {
+    resetTodoError: (state) => {
       state.error = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getAllTodos.fulfilled, (state, action) => {
+      .addCase(getAllTodo.fulfilled, (state, action) => {
         state.data = action.payload;
       })
-      .addCase(getAllTodos.rejected, (state, { payload }) => {
+      .addCase(getAllTodo.rejected, (state, { payload }) => {
         state.error = payload as string;
       })
       .addCase(addTodoItem.fulfilled, (state, action) => {
@@ -41,5 +41,5 @@ export const todoItemSlice = createSlice({
   },
 });
 
-export { getAllTodos };
-export const { resetError } = todoItemSlice.actions;
+export { getAllTodo };
+export const { resetTodoError: resetTodoError } = todoItemSlice.actions;
