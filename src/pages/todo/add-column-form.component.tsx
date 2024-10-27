@@ -14,6 +14,8 @@ import { z } from 'zod';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { addNewColumn } from '@/lib/redux/columns/columns.actions';
 import { useTranslation } from 'react-i18next';
+import { toast } from '@/hooks/use-toast';
+import { ErrorToastContent } from '@/components/error-toast-content.component';
 
 export const AddColumnForm = () => {
   const { t } = useTranslation();
@@ -26,7 +28,16 @@ export const AddColumnForm = () => {
   });
 
   const onSubmit = (values: z.infer<typeof addColumnFormSchema>) => {
-    dispatch(addNewColumn({ ...values }));
+    dispatch(addNewColumn({ ...values }))
+      .unwrap()
+      .catch((error) =>
+        toast({
+          duration: 1000,
+          className: 'bg-red-400',
+          action: <ErrorToastContent errorMessage={error.message} />,
+        })
+      );
+
     form.reset();
     console.log(values);
   };

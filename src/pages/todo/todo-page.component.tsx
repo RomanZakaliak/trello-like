@@ -2,23 +2,18 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { CollapseSwitch } from './collapse-switch.component';
 import { getAllColumns } from '@/lib/redux/columns/columns.actions';
-import { AddTodoForm } from './add-todo-form.component';
-import { getAllTodo } from '@/lib/redux/todo-items/todo-items.actions';
-import { ColumnsContainer } from './columns-container.component';
-import { Button } from '@/components/ui/button';
 import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from '../../components/ui/dialog';
-import { DialogTitle } from '@radix-ui/react-dialog';
-import { useTranslation } from 'react-i18next';
+  getAllTodo,
+  updateTodoItem,
+} from '@/lib/redux/todo-items/todo-items.actions';
+import { ColumnsContainer } from './columns-container.component';
 import { Header } from '@/components/header.component';
 import {
-  closestCenter,
   closestCorners,
   DndContext,
+  DragEndEvent,
   DragOverlay,
+  DragStartEvent,
   MeasuringConfiguration,
   MeasuringStrategy,
   PointerSensor,
@@ -26,6 +21,11 @@ import {
   useSensors,
 } from '@dnd-kit/core';
 import { TodoItemCell } from './todo-item-cell.component';
+import { ITodoItem } from '@/common/interfaces/todo-item.interface';
+import { AddTodoDialog } from './add-todo-dialog,component';
+import { updateTodoState } from '@/lib/redux/todo-items/todo-items.slice';
+import { toast } from '@/hooks/use-toast';
+import { ErrorToastContent } from '@/components/error-toast-content.component';
 
 const measuring: MeasuringConfiguration = {
   droppable: {
@@ -34,9 +34,7 @@ const measuring: MeasuringConfiguration = {
 };
 
 export const TodoPage = () => {
-  const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   useEffect(() => {
     dispatch(getAllColumns());
@@ -45,47 +43,75 @@ export const TodoPage = () => {
 
   const sensors = useSensors(useSensor(PointerSensor));
 
-  const handleDragEnd = () => {
-    return false;
+  const [activeItem, setActiveItem] = useState<ITodoItem | null>(null);
+
+  const handleDragEnd = (e: DragEndEvent) => {
+    // temporary fix of select issue, need to fix select event propagation
+    // select - Select component in todo-item-cell (do not provide ability to stop event propagation by default)
+    if (e.delta.x + e.delta.y === 0) {
+      setActiveItem(null);
+      return;
+    }
+
+    const { active, over } = e;
+    const overData = over?.data.current;
+    const activeData = active.data.current;
+
+    if (over && overData?.associatedStatus !== activeData?.status) {
+      const updatedTodo = {
+        ...activeData,
+        status: overData?.associatedStatus,
+      } as ITodoItem;
+
+      // Update state synchronously to make dnd work properly
+      dispatch(updateTodoState(updatedTodo));
+
+      // Perform actual async request to update item
+      dispatch(updateTodoItem(updatedTodo))
+        .unwrap()
+        .catch((error) => {
+          dispatch(updateTodoState(activeData));
+
+          toast({
+            duration: 1000,
+            className: 'bg-red-400',
+            action: <ErrorToastContent errorMessage={error.message} />,
+          });
+        });
+    }
+
+    setActiveItem(null);
+  };
+
+  const handelDragStart = (e: DragStartEvent) => {
+    console.log(e);
+    const activeItem = e.active.data.current as ITodoItem;
+    setActiveItem(activeItem);
   };
 
   return (
-    <div className="min-h-[100vh] bg-slate-50">
+    <div className="bg-slate-50">
       <Header></Header>
       <div className="flex justify-center gap-3 py-2">
-        <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
-          <DialogTrigger asChild>
-            <Button>{t('createNewTodoButton')}</Button>
-          </DialogTrigger>
-          <DialogContent className="w-full sm:w-3/4 md:w-1/2 lg:w-1/3">
-            <DialogTitle>{t('createTodoTitle')}</DialogTitle>
-            <AddTodoForm
-              onFormSubmit={() => {
-                setIsOpen(false);
-              }}
-            />
-          </DialogContent>
-        </Dialog>
-
+        <AddTodoDialog />
         <CollapseSwitch />
       </div>
-      <DndContext
-        onDragEnd={handleDragEnd}
-        onDragOver={() => {
-          return false;
-        }}
-        sensors={sensors}
-        collisionDetection={closestCorners}
-        measuring={measuring}
-        autoScroll={false}
-      >
-        <main className="overflow-x-hidden">
+
+      <main className="overflow-hidden">
+        <DndContext
+          onDragEnd={handleDragEnd}
+          onDragStart={handelDragStart}
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          measuring={measuring}
+          autoScroll={false}
+        >
           <ColumnsContainer />
-        </main>
-        <DragOverlay>
-          <TodoItemCell />
-        </DragOverlay>
-      </DndContext>
+          <DragOverlay>
+            <TodoItemCell todoItem={activeItem!} />
+          </DragOverlay>
+        </DndContext>
+      </main>
     </div>
   );
 };

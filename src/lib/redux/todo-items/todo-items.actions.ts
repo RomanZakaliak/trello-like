@@ -36,9 +36,11 @@ export const updateTodoItem = createAsyncThunk<
   { extra: ThunkExtraArgs }
 >('todo/updateTodo', async (payload, { extra, rejectWithValue }) => {
   try {
+    console.log('called update');
     const updatedTodo = await extra.todoItemsService.update(payload);
     return updatedTodo;
   } catch (error: any) {
+    console.log(error);
     return rejectWithValue(error.message);
   }
 });

@@ -15,6 +15,11 @@ export const todoItemSlice = createSlice({
     resetTodoError: (state) => {
       state.error = null;
     },
+    updateTodoState: (state, { payload }) => {
+      state.data = state.data.map((td) =>
+        td.id === payload.id ? payload : td
+      );
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -36,10 +41,11 @@ export const todoItemSlice = createSlice({
         );
       })
       .addCase(updateTodoItem.rejected, (state, action) => {
+        console.log('rejected');
         state.error = action.payload as string;
       });
   },
 });
 
 export { getAllTodo };
-export const { resetTodoError: resetTodoError } = todoItemSlice.actions;
+export const { resetTodoError, updateTodoState } = todoItemSlice.actions;

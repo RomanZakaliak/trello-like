@@ -1,6 +1,6 @@
 import { IColumn } from '@/common/interfaces/column.interface';
 import { IColumnsService } from './interfaces/columns-service.interface';
-import { TNewColumn } from '@/types/new-column.type';
+import { TNewColumn } from '@/common/types/new-column.type';
 
 const initialColumns = [
   {

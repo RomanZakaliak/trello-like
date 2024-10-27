@@ -1,4 +1,4 @@
-import { TItemStatus } from '../../types/items-status.type.ts';
+import { TItemStatus } from '@/common/types/items-status.type.ts';
 
 export interface ITodoItem {
   id: number;

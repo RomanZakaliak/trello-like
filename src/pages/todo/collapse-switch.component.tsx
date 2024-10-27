@@ -13,11 +13,11 @@ export const CollapseSwitch: React.FC = () => {
   return (
     <div className="flex items-center space-x-2">
       <Switch
-        id="collapse-collumns"
+        id="collapse-columns"
         checked={collapseEmptyColumns}
         onCheckedChange={(checked) => dispatch(updateColumnsCollapse(checked))}
       />
-      <Label htmlFor="collapse-collumns">{t('collapseColumnsLabel')}</Label>
+      <Label htmlFor="collapse-columns">{t('collapseColumnsLabel')}</Label>
     </div>
   );
 };

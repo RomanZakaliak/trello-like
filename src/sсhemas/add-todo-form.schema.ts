@@ -7,9 +7,9 @@ export const addTodoFormSchema = z.object({
       message: 'addTodoSchemaErrorTitleMin',
     })
     .max(200, {
-      message: 'addTodoShemaErrorTitleMax',
+      message: 'addTodoSchemaErrorTitleMax',
     }),
   description: z.string().max(500, {
-    message: 'addTodosSchemaDescriptionMax',
+    message: 'addTodoSchemaDescriptionMax',
   }),
 });

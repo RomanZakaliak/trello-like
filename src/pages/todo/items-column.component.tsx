@@ -12,6 +12,7 @@ import { ITodoItem } from '@/common/interfaces/todo-item.interface';
 import { cn } from '@/utils/utils';
 import { Draggable } from '@/components/draggable.component';
 import { TodoItemCell } from './todo-item-cell.component';
+import { useMemo } from 'react';
 
 interface ItemsColumnProps {
   columnOptions: IColumn;
@@ -27,10 +28,13 @@ export const ItemsColumn: React.FC<ItemsColumnProps> = ({
 
   const { isOver, setNodeRef } = useDroppable({
     id: columnOptions.id,
+    data: columnOptions,
   });
 
-  const items = todoItems.filter(
-    (todo) => todo.status == columnOptions.associatedStatus
+  const items = useMemo(
+    () =>
+      todoItems.filter((todo) => todo.status == columnOptions.associatedStatus),
+    [todoItems, columnOptions.associatedStatus]
   );
 
   const collapse = collapseEmptyColumns && items.length === 0;
@@ -46,6 +50,7 @@ export const ItemsColumn: React.FC<ItemsColumnProps> = ({
         'bg-gray-400': isOver,
       })}
       ref={setNodeRef}
+      onDrop={(e) => e.preventDefault()}
     >
       <CardHeader>
         <CardTitle>{columnTitle}</CardTitle>
@@ -53,7 +58,7 @@ export const ItemsColumn: React.FC<ItemsColumnProps> = ({
       <CardContent>
         <ul className="no-scrollbar mt-2 h-fit max-h-[70vh] overflow-x-scroll border-2 border-solid p-2">
           {items.map((i) => (
-            <Draggable key={i.id} id={i.id}>
+            <Draggable<ITodoItem> key={i.id} id={i.id} element="li" data={i}>
               <TodoItemCell todoItem={i} columns={columns} />
             </Draggable>
           ))}
