@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { CollapseSwitch } from './collapse-switch.component';
+import { CollapseSwitch } from './components/collapse-switch.component';
 import { getAllColumns } from '@/lib/redux/columns/columns.actions';
 import {
   getAllTodo,
   updateTodoItem,
 } from '@/lib/redux/todo-items/todo-items.actions';
-import { ColumnsContainer } from './columns-container.component';
+import { ColumnsContainer } from './components/columns-container.component';
 import { Header } from '@/components/header.component';
 import {
   closestCorners,
@@ -20,9 +20,9 @@ import {
   useSensor,
   useSensors,
 } from '@dnd-kit/core';
-import { TodoItemCell } from './todo-item-cell.component';
+import { TodoItemCell } from './components/todo-item-cell.component';
 import { ITodoItem } from '@/common/interfaces/todo-item.interface';
-import { AddTodoDialog } from './add-todo-dialog,component';
+import { AddTodoDialog } from './components/add-todo-dialog.component';
 import { updateTodoState } from '@/lib/redux/todo-items/todo-items.slice';
 import { toast } from '@/hooks/use-toast';
 import { ErrorToastContent } from '@/components/error-toast-content.component';
@@ -39,20 +39,14 @@ export const TodoPage = () => {
   useEffect(() => {
     dispatch(getAllColumns());
     dispatch(getAllTodo());
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const sensors = useSensors(useSensor(PointerSensor));
 
   const [activeItem, setActiveItem] = useState<ITodoItem | null>(null);
 
   const handleDragEnd = (e: DragEndEvent) => {
-    // temporary fix of select issue, need to fix select event propagation
-    // select - Select component in todo-item-cell (do not provide ability to stop event propagation by default)
-    if (e.delta.x + e.delta.y === 0) {
-      setActiveItem(null);
-      return;
-    }
-
     const { active, over } = e;
     const overData = over?.data.current;
     const activeData = active.data.current;
@@ -83,8 +77,7 @@ export const TodoPage = () => {
     setActiveItem(null);
   };
 
-  const handelDragStart = (e: DragStartEvent) => {
-    console.log(e);
+  const handleDragStart = (e: DragStartEvent) => {
     const activeItem = e.active.data.current as ITodoItem;
     setActiveItem(activeItem);
   };
@@ -100,7 +93,7 @@ export const TodoPage = () => {
       <main className="overflow-hidden">
         <DndContext
           onDragEnd={handleDragEnd}
-          onDragStart={handelDragStart}
+          onDragStart={handleDragStart}
           sensors={sensors}
           collisionDetection={closestCorners}
           measuring={measuring}

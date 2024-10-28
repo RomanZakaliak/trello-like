@@ -51,11 +51,20 @@ export const TodoItemCell: React.FC<ITodoItemCellProps> = memo(
             {t('changeStatusValuePlaceholder')}
           </SelectTrigger>
           <SelectContent>
-            <SelectGroup>
+            <SelectGroup
+              onPointerDown={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+              }}
+            >
               <SelectLabel>{t('statusesSelectLabel')}</SelectLabel>
               {columns
                 ? columns.map((c) => (
-                    <SelectItem key={c.id} value={c.associatedStatus}>
+                    <SelectItem
+                      key={c.id}
+                      value={c.associatedStatus}
+                      onDragStart={() => console.log('dragging start')}
+                    >
                       {c.title}
                     </SelectItem>
                   ))

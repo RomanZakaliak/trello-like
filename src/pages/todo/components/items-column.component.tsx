@@ -6,7 +6,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '../../components/ui/card';
+} from '../../../components/ui/card';
 import { getAbbreviation } from '@/utils/app-utils';
 import { ITodoItem } from '@/common/interfaces/todo-item.interface';
 import { cn } from '@/utils/utils';

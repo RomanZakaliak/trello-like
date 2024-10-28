@@ -5,7 +5,7 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from '../../components/ui/card';
+} from '../../../components/ui/card';
 import { AddColumnForm } from './add-column-form.component';
 import { useTranslation } from 'react-i18next';
 
