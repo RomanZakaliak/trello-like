@@ -1,5 +1,5 @@
 import { ITodoItem } from '@/common/interfaces/todo-item.interface';
-import React, { forwardRef, memo } from 'react';
+import React, { memo } from 'react';
 import { IColumn } from '@/common/interfaces/column.interface';
 import { useAppDispatch } from '@/lib/redux/hooks';
 import { updateTodoItem } from '@/lib/redux/todo-items/todo-items.actions';
@@ -20,7 +20,7 @@ interface ITodoItemCellProps {
 
 export const TodoItemCell: React.FC<ITodoItemCellProps> = memo(
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  forwardRef(({ todoItem, columns }, _ref) => {
+  ({ todoItem, columns }) => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
 
@@ -74,5 +74,5 @@ export const TodoItemCell: React.FC<ITodoItemCellProps> = memo(
         </Select>
       </div>
     );
-  })
+  }
 );
