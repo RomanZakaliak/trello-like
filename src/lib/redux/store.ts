@@ -4,16 +4,21 @@ import { columnsSlice } from './columns/columns.slice';
 import {
   ColumnsService,
   columnsService,
-} from '@/services/columns.service';
+} from '@/services/columns/columns.service';
 import {
   TodoItemsService,
   todoItemsService,
-} from '@/services/todo-items.service';
+} from '@/services/todo-items/todo-items.service';
 import { settingsSlice } from './settings/settings.slice';
+import {
+  SettingsService,
+  settingsService,
+} from '@/services/settings/settings-state.service';
 
 export interface ThunkExtraArgs {
   columnsService: ColumnsService;
   todoItemsService: TodoItemsService;
+  settingsService: SettingsService;
 }
 
 export const store = configureStore({
@@ -28,6 +33,7 @@ export const store = configureStore({
         extraArgument: {
           columnsService,
           todoItemsService,
+          settingsService,
         } as ThunkExtraArgs,
       },
     }),

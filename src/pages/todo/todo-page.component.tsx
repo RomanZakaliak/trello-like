@@ -84,7 +84,7 @@ export const TodoPage = () => {
 
   return (
     <div className="bg-slate-50">
-      <Header></Header>
+      <Header />
       <div className="flex justify-center gap-3 py-2">
         <AddTodoDialog />
         <CollapseSwitch />

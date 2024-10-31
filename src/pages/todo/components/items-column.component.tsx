@@ -56,7 +56,7 @@ export const ItemsColumn: React.FC<ItemsColumnProps> = ({
         <CardTitle>{columnTitle}</CardTitle>
       </CardHeader>
       <CardContent>
-        <ul className="no-scrollbar mt-2 h-fit max-h-[70vh] overflow-x-scroll border-2 border-solid p-2">
+        <ul className="no-scrollbar mt-2 h-fit max-h-[70vh] overflow-x-scroll p-2">
           {items.map((i) => (
             <Draggable<ITodoItem> key={i.id} id={i.id} element="li" data={i}>
               <TodoItemCell todoItem={i} columns={columns} />

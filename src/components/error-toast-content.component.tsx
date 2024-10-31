@@ -13,7 +13,7 @@ export const ErrorToastContent: React.FC<IErrorToastContentProps> = ({
 
   return (
     <div className="flex w-full items-center gap-1">
-      <MdError className="" size={25} />
+      <MdError size={25} />
       <div>
         <h6 className="font-bold">{t('toastErrorTitle')}</h6>
         <span>{errorMessage}</span>

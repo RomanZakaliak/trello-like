@@ -8,16 +8,22 @@ import {
 } from '@/components/ui/select';
 import { Language } from '@/common/enums/language.enum';
 import { Link } from 'react-router-dom';
+import { BiColumns } from 'react-icons/bi';
 
 export const Header = () => {
   const { i18n } = useTranslation();
 
   return (
-    <header className="flex flex-row justify-between px-10 pt-2">
-      <div>Logo goes here</div>
-      <nav>
-        <ul>
-          <Link to="/">ToDo</Link>
+    <header className="flex flex-row items-center justify-between bg-slate-300 px-10 py-2 text-xl">
+      <BiColumns size={40} />
+      <nav className="flex items-center">
+        <ul className="flex flex-row gap-4">
+          <li>
+            <Link to="/">ToDos</Link>
+          </li>
+          <li>
+            <Link to="/login">Login</Link>
+          </li>
         </ul>
       </nav>
 

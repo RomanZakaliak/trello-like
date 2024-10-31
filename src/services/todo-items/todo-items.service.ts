@@ -1,5 +1,5 @@
 import { TNewTodoItem } from '@/common/types/new-todo-item.type';
-import { ITodoItem } from '../common/interfaces/todo-item.interface';
+import { ITodoItem } from '../../common/interfaces/todo-item.interface';
 import { ITodoItemsService } from './interfaces/todo-items-service.interface';
 
 export class TodoItemsService implements ITodoItemsService {
