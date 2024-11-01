@@ -14,11 +14,17 @@ import {
   SettingsService,
   settingsService,
 } from '@/services/settings/settings-state.service';
+import { authSlice } from './auth/auth.slice';
+import {
+  apiUserService,
+  ApiUserService,
+} from '@/services/user/api-user.service';
 
 export interface ThunkExtraArgs {
   columnsService: ColumnsService;
   todoItemsService: TodoItemsService;
   settingsService: SettingsService;
+  apiUserService: ApiUserService;
 }
 
 export const store = configureStore({
@@ -26,6 +32,7 @@ export const store = configureStore({
     todoItems: todoItemSlice.reducer,
     columns: columnsSlice.reducer,
     settings: settingsSlice.reducer,
+    auth: authSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -34,6 +41,7 @@ export const store = configureStore({
           columnsService,
           todoItemsService,
           settingsService,
+          apiUserService,
         } as ThunkExtraArgs,
       },
     }),

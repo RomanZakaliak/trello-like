@@ -4,8 +4,6 @@ import { PayloadAction } from '@reduxjs/toolkit';
 
 export const initialState: ISettingState = {
   collapseEmptyColumns: false,
-  isAuthorized: false,
-  token: null,
 };
 
 export const settingsSlice = createSlice({

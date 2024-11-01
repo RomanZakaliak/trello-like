@@ -1,15 +1,17 @@
 import { z } from 'zod';
 
-export const userRegisterSchema = z.object({
+const userBaseRegisterSchema = z.object({
+  name: z.string().min(3, {
+    message: 'Name should contain at least 3 characters',
+  }),
   email: z
     .string()
     .min(1, {
       message: 'Email is required',
     })
-    .email(),
-  name: z.string().min(1),
+    .email({ message: 'Email format is invalid' }),
   password: z
-    .string({ message: 'Email format is invalid' })
+    .string()
     .min(8, {
       message: 'Password should contain at least 8 symbols',
     })
@@ -22,7 +24,18 @@ export const userRegisterSchema = z.object({
     ),
 });
 
-export const userLoginSchema = userRegisterSchema.omit({ name: true });
+export const userRegisterSchema = userBaseRegisterSchema
+  .extend({
+    confirmPassword: z.string().min(8),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Passwords does not match',
+    path: ['confirmPassword'],
+  });
+
+export type UserRegister = z.infer<typeof userRegisterSchema>;
+
+export const userLoginSchema = userBaseRegisterSchema.omit({ name: true });
 
 export const fullUserSchema = z.object({
   id: z.number().positive(),

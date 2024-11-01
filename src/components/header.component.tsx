@@ -9,21 +9,36 @@ import {
 import { Language } from '@/common/enums/language.enum';
 import { Link } from 'react-router-dom';
 import { BiColumns } from 'react-icons/bi';
+import { useAppSelector } from '@/lib/redux/hooks';
 
 export const Header = () => {
   const { i18n } = useTranslation();
+  const token = useAppSelector((state) => state.auth.userToken);
 
   return (
     <header className="flex flex-row items-center justify-between bg-slate-300 px-10 py-2 text-xl">
-      <BiColumns size={40} />
+      <Link to="/">
+        <BiColumns size={40} />
+      </Link>
       <nav className="flex items-center">
         <ul className="flex flex-row gap-4">
           <li>
             <Link to="/">ToDos</Link>
           </li>
-          <li>
-            <Link to="/login">Login</Link>
-          </li>
+          {token != null ? (
+            <li>
+              <button>Logout</button>
+            </li>
+          ) : (
+            <>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
+              <li>
+                <Link to="/register">Register</Link>
+              </li>
+            </>
+          )}
         </ul>
       </nav>
 

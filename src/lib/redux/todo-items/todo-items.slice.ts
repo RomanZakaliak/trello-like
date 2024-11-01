@@ -1,6 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addTodoItem, getAllTodo, updateTodoItem } from './todo-items.actions';
+import {
+  addTodoItem,
+  deleteTodoItem,
+  getAllTodo,
+  updateTodoItem,
+} from './todo-items.actions';
 import { ITodoItemsState } from './todo-items-state.interface';
+import { ITodoItem } from '@/common/interfaces/todo-item.interface.ts';
 
 const initialState: ITodoItemsState = {
   data: [],
@@ -41,8 +47,10 @@ export const todoItemSlice = createSlice({
         );
       })
       .addCase(updateTodoItem.rejected, (state, action) => {
-        console.log('rejected');
         state.error = action.payload as string;
+      })
+      .addCase(deleteTodoItem.fulfilled, (state, { payload }) => {
+        state.data = state.data.filter((i: ITodoItem) => i.id !== payload.id);
       });
   },
 });

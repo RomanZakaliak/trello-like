@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -9,11 +8,15 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { apiUserService } from '@/services/user/api-user.service';
 import { userLoginSchema } from '@/sсhemas/user.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { loginUser } from '@/lib/redux/auth/auth.actions';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { resetFlags } from '@/lib/redux/auth/auth.slice';
 
 export const LoginForm = () => {
   const form = useForm<z.infer<typeof userLoginSchema>>({
@@ -24,28 +27,29 @@ export const LoginForm = () => {
     },
   });
 
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
+  const { error, loading } = useAppSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetFlags());
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = async (values: z.infer<typeof userLoginSchema>) => {
-    try {
-      console.log('before submit');
-      const response = await apiUserService.login(values);
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message);
-      }
-    } catch (error) {
-      console.error(error instanceof Error);
-      setError((error as Error).message);
-    }
+    dispatch(loginUser(values)).then(() => {
+      console.log('no errors');
+      navigate('/');
+    });
   };
 
   return (
     <>
       {error && (
         <div className="my-1 text-center text-lg text-red-600">
-          Error: {error}
+          Error: {error.toString()}
         </div>
       )}
       <Form {...form}>
@@ -77,7 +81,9 @@ export const LoginForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Login</Button>
+          <Button type="submit" disabled={loading}>
+            Login
+          </Button>
         </form>
       </Form>
     </>

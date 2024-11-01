@@ -2,7 +2,10 @@ import { ITodoItem } from '@/common/interfaces/todo-item.interface';
 import React, { memo } from 'react';
 import { IColumn } from '@/common/interfaces/column.interface';
 import { useAppDispatch } from '@/lib/redux/hooks';
-import { updateTodoItem } from '@/lib/redux/todo-items/todo-items.actions';
+import {
+  deleteTodoItem,
+  updateTodoItem,
+} from '@/lib/redux/todo-items/todo-items.actions';
 import { useTranslation } from 'react-i18next';
 import {
   Select,
@@ -12,6 +15,7 @@ import {
   SelectLabel,
   SelectTrigger,
 } from '@/components/ui/select';
+import { IoClose } from 'react-icons/io5';
 
 interface ITodoItemCellProps {
   todoItem: ITodoItem;
@@ -19,7 +23,6 @@ interface ITodoItemCellProps {
 }
 
 export const TodoItemCell: React.FC<ITodoItemCellProps> = memo(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ({ todoItem, columns }) => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
@@ -27,7 +30,6 @@ export const TodoItemCell: React.FC<ITodoItemCellProps> = memo(
     const handleSelectChange = (newItemStatus: string) => {
       if (todoItem?.status == newItemStatus) return;
 
-      console.log('do something');
       const item = { ...todoItem, status: newItemStatus };
       dispatch(updateTodoItem(item as ITodoItem));
     };
@@ -38,9 +40,23 @@ export const TodoItemCell: React.FC<ITodoItemCellProps> = memo(
 
     return (
       <div className="relative z-10 mb-1 flex w-full flex-col items-center rounded-sm border-2 border-solid border-slate-900 bg-slate-50">
-        <h5 className="w-full p-1 text-xl font-semibold">
-          {todoItem?.title ?? 'Title'}
-        </h5>
+        <div className="align-center flex w-full flex-row justify-between">
+          <h5 className="w-full p-1 text-xl font-semibold">
+            {todoItem?.title ?? 'Title'}
+          </h5>
+
+          <button
+            onClick={(e) => {
+              return;
+              e.stopPropagation();
+              console.log('Gotcha');
+              dispatch(deleteTodoItem(todoItem));
+            }}
+            className="pointer-events-auto"
+          >
+            <IoClose size={30} />
+          </button>
+        </div>
         <p className="w-full p-1">{todoItem?.description ?? 'Description'}</p>
 
         <Select

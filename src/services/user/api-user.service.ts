@@ -1,29 +1,35 @@
-import {
-  HttpContentType,
-  HttpHeader,
-  HttpMethod,
-} from '@/common/enums/http.enum';
-import { environment } from '@/config/environment';
-import { userLoginSchema } from '@/sсhemas/user.schema';
+import { api } from '@/lib/api/api';
+import { AccessToken } from '@/sсhemas/token.schema';
+import { userLoginSchema, userRegisterSchema } from '@/sсhemas/user.schema';
 import { z } from 'zod';
 
-class ApiUserService {
+export class ApiUserService {
   private apiEndpoint: string;
+
   constructor() {
-    this.apiEndpoint = environment.apiBaseUrl + '/auth';
+    this.apiEndpoint = '/auth';
   }
 
-  async login(credentials: z.infer<typeof userLoginSchema>) {
-    const headers = new Headers();
-    headers.append(HttpHeader.CONTENT_TYPE, HttpContentType.JSON);
+  async login(
+    credentials: z.infer<typeof userLoginSchema>
+  ): Promise<AccessToken> {
+    const response = await api.post(this.apiEndpoint + '/login', credentials);
+    return response.data;
+  }
 
-    const response = await fetch(this.apiEndpoint + '/login', {
-      headers: headers,
-      method: HttpMethod.POST,
-      body: JSON.stringify(credentials),
-    });
+  async register(userData: z.infer<typeof userRegisterSchema>) {
+    // temp fix to make backend math this object
+    const newUserData = { ...userData, confirmPassword: undefined };
+    await api.post(this.apiEndpoint + '/register', newUserData);
+  }
 
-    return response;
+  async refresh(): Promise<AccessToken> {
+    const response = await api.get(this.apiEndpoint + '/refresh');
+    return response.data;
+  }
+
+  async logout(): Promise<void> {
+    await api.delete(this.apiEndpoint + '/logout');
   }
 }
 

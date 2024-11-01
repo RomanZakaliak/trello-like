@@ -7,7 +7,7 @@ export const getAllTodo = createAsyncThunk<
   any,
   void,
   { extra: ThunkExtraArgs }
->('todo/fetchAll', async (_payload, { extra, rejectWithValue }) => {
+>('todo/fetchAll', async (_, { extra, rejectWithValue }) => {
   try {
     const items = await extra.todoItemsService.getAll();
     return items;
@@ -36,9 +36,22 @@ export const updateTodoItem = createAsyncThunk<
   { extra: ThunkExtraArgs }
 >('todo/updateTodo', async (payload, { extra, rejectWithValue }) => {
   try {
-    console.log('called update');
     const updatedTodo = await extra.todoItemsService.update(payload);
     return updatedTodo;
+  } catch (error: any) {
+    console.log(error);
+    return rejectWithValue(error.message);
+  }
+});
+
+export const deleteTodoItem = createAsyncThunk<
+  any,
+  ITodoItem,
+  { extra: ThunkExtraArgs }
+>('todo/deleteTodo', async (payload, { extra, rejectWithValue }) => {
+  try {
+    await extra.todoItemsService.delete(payload);
+    return payload;
   } catch (error: any) {
     console.log(error);
     return rejectWithValue(error.message);
