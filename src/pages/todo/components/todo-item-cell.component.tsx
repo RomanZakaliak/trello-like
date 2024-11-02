@@ -46,13 +46,11 @@ export const TodoItemCell: React.FC<ITodoItemCellProps> = memo(
           </h5>
 
           <button
+            className="pointer-events-auto z-10 m-1 rounded-sm border-2 border-solid p-0.5 hover:bg-slate-700 [&>svg]:hover:fill-slate-50"
             onClick={(e) => {
-              return;
               e.stopPropagation();
-              console.log('Gotcha');
               dispatch(deleteTodoItem(todoItem));
             }}
-            className="pointer-events-auto"
           >
             <IoClose size={30} />
           </button>

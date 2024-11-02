@@ -16,6 +16,8 @@ import { registerUser } from '@/lib/redux/auth/auth.actions';
 import { useEffect } from 'react';
 import { resetFlags } from '@/lib/redux/auth/auth.slice';
 import { Link } from 'react-router-dom';
+import { toast } from '@/hooks/use-toast';
+import { ErrorToastContent } from '@/components/error-toast-content.component';
 
 export const RegisterForm = () => {
   const dispatch = useAppDispatch();
@@ -30,10 +32,18 @@ export const RegisterForm = () => {
     },
   });
 
-  const { error, loading, success } = useAppSelector((state) => state.auth);
+  const { loading, success } = useAppSelector((state) => state.auth);
 
   const onSubmit = async (values: UserRegister) => {
-    dispatch(registerUser(values));
+    dispatch(registerUser(values))
+      .unwrap()
+      .catch((error) => {
+        toast({
+          duration: 2000,
+          className: 'bg-red-400',
+          action: <ErrorToastContent errorMessage={error} />,
+        });
+      });
   };
 
   useEffect(() => {
@@ -55,71 +65,63 @@ export const RegisterForm = () => {
   }
 
   return (
-    <>
-      {error && (
-        <div className="my-1 text-center text-lg text-red-600">
-          Error: {error.toString()}
-        </div>
-      )}
-
-      <Form {...form}>
-        <form
-          className="flex flex-col items-center gap-2"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FormField
-            name="name"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Name</FormLabel>
-                <FormMessage />
-                <FormControl>
-                  <Input {...field} autoComplete="false" />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="email"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Email</FormLabel>
-                <FormMessage />
-                <FormControl>
-                  <Input {...field} autoComplete="false" />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="password"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Password</FormLabel>
-                <FormMessage />
-                <FormControl>
-                  <Input type="password" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Confirm Password</FormLabel>
-                <FormMessage />
-                <FormControl>
-                  <Input type="password" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <Button type="submit" disabled={loading}>
-            Register
-          </Button>
-        </form>
-      </Form>
-    </>
+    <Form {...form}>
+      <form
+        className="flex flex-col items-center gap-2"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <FormField
+          name="name"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Name</FormLabel>
+              <FormMessage />
+              <FormControl>
+                <Input {...field} autoComplete="false" />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="email"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Email</FormLabel>
+              <FormMessage />
+              <FormControl>
+                <Input {...field} autoComplete="false" />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="password"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Password</FormLabel>
+              <FormMessage />
+              <FormControl>
+                <Input type="password" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="confirmPassword"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Confirm Password</FormLabel>
+              <FormMessage />
+              <FormControl>
+                <Input type="password" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <Button type="submit" disabled={loading}>
+          Register
+        </Button>
+      </form>
+    </Form>
   );
 };

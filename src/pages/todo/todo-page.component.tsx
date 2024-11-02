@@ -42,7 +42,11 @@ export const TodoPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const sensors = useSensors(useSensor(PointerSensor));
+  const sensors = useSensors(useSensor(PointerSensor, {
+    activationConstraint: {
+      distance: 10
+    }
+  }));
 
   const [activeItem, setActiveItem] = useState<ITodoItem | null>(null);
 

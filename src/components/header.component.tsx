@@ -9,11 +9,26 @@ import {
 import { Language } from '@/common/enums/language.enum';
 import { Link } from 'react-router-dom';
 import { BiColumns } from 'react-icons/bi';
-import { useAppSelector } from '@/lib/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
+import { useEffect } from 'react';
+import { logoutUser, refetchToken } from '@/lib/redux/auth/auth.actions';
 
 export const Header = () => {
   const { i18n } = useTranslation();
-  const token = useAppSelector((state) => state.auth.userToken);
+  const { userToken } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (!userToken) {
+      console.log('try to fetch token');
+      dispatch(refetchToken());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userToken]);
+
+  const handleLogoutClick = () => {
+    dispatch(logoutUser());
+  };
 
   return (
     <header className="flex flex-row items-center justify-between bg-slate-300 px-10 py-2 text-xl">
@@ -25,9 +40,9 @@ export const Header = () => {
           <li>
             <Link to="/">ToDos</Link>
           </li>
-          {token != null ? (
+          {userToken != null ? (
             <li>
-              <button>Logout</button>
+              <button onClick={handleLogoutClick}>Logout</button>
             </li>
           ) : (
             <>

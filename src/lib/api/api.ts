@@ -14,6 +14,7 @@ const config: CreateAxiosDefaults = {
   headers: {
     [HttpHeader.CONTENT_TYPE]: HttpContentType.JSON,
   },
+  withCredentials: true,
 };
 
 const api = axios.create(config);
@@ -32,8 +33,6 @@ api.interceptors.response.use(
     const originalRequest = error.config as AxiosRequestConfig & {
       _retry?: boolean;
     };
-
-    console.log(error?.response?.status);
 
     if (
       error.response &&

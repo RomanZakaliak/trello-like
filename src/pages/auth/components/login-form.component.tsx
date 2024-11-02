@@ -17,6 +17,8 @@ import { loginUser } from '@/lib/redux/auth/auth.actions';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { resetFlags } from '@/lib/redux/auth/auth.slice';
+import { ErrorToastContent } from '@/components/error-toast-content.component';
+import { toast } from '@/hooks/use-toast';
 
 export const LoginForm = () => {
   const form = useForm<z.infer<typeof userLoginSchema>>({
@@ -28,10 +30,11 @@ export const LoginForm = () => {
   });
 
   const dispatch = useAppDispatch();
-  const { error, loading } = useAppSelector((state) => state.auth);
+  const { loading } = useAppSelector((state) => state.auth);
   const navigate = useNavigate();
 
   useEffect(() => {
+    dispatch(resetFlags());
     return () => {
       dispatch(resetFlags());
     };
@@ -39,53 +42,56 @@ export const LoginForm = () => {
   }, []);
 
   const onSubmit = async (values: z.infer<typeof userLoginSchema>) => {
-    dispatch(loginUser(values)).then(() => {
-      console.log('no errors');
-      navigate('/');
-    });
+    dispatch(loginUser(values))
+      .unwrap()
+      .then(() => {
+        console.log('then');
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log(error);
+        toast({
+          duration: 2000,
+          className: 'bg-red-400',
+          action: <ErrorToastContent errorMessage={error} />,
+        });
+      });
   };
 
   return (
-    <>
-      {error && (
-        <div className="my-1 text-center text-lg text-red-600">
-          Error: {error.toString()}
-        </div>
-      )}
-      <Form {...form}>
-        <form
-          className="flex flex-col items-center gap-2"
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
-          <FormField
-            name="email"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Email</FormLabel>
-                <FormMessage />
-                <FormControl>
-                  <Input {...field} autoComplete="false" />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            name="password"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Password</FormLabel>
-                <FormMessage />
-                <FormControl>
-                  <Input type="password" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <Button type="submit" disabled={loading}>
-            Login
-          </Button>
-        </form>
-      </Form>
-    </>
+    <Form {...form}>
+      <form
+        className="flex flex-col items-center gap-2"
+        onSubmit={form.handleSubmit(onSubmit)}
+      >
+        <FormField
+          name="email"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Email</FormLabel>
+              <FormMessage />
+              <FormControl>
+                <Input {...field} autoComplete="false" />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <FormField
+          name="password"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Password</FormLabel>
+              <FormMessage />
+              <FormControl>
+                <Input type="password" {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+        <Button type="submit" disabled={loading}>
+          Login
+        </Button>
+      </form>
+    </Form>
   );
 };
